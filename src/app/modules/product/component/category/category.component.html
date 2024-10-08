@@ -1,81 +1,108 @@
-<body>
-  <header>
-    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-      <div class="container-fluid navbar-content">
-        <a class="navbar-brand" href="#">DW-FrontEnd</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Category
-                <span class="visually-hidden">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false">Dropdown</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-              </div>
-            </li>
-          </ul>
-          <form class="d-flex">
-            <input class="form-control me-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+<main>
+  <div class="body-content">
+    <div class="card">
+
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            <h4>Categorías</h4>
+          </div>
+
+          <div class="col">
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-info btn-new" (click)="showModalForm()">
+              Nueva Categoría
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr class="table-header">
+              <th scope="col">Category Id</th>
+              <th scope="col">Category</th>
+              <th scope="col">Tag</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(category of categories; track category.category_id; let i = $index ) {
+            <tr>
+              <td>{{ category.category_id }}</td>
+              <td>{{ category.category }}</td>
+              <td>{{ category.tag }}</td>
+              <td> @if (category.status) {
+                Activo
+                } @else {
+                Inactivo
+                }
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <small>27 de Septiembre de 2024</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="modalForm">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- header  -->
+
+        <div class="modal-body">
+          <!-- form  -->
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <!-- categoría  -->
+
+            <div class="mb-3">
+              <label for="category" class="form-label">Categoría <span class="input-required">*</span></label>
+              <input type="text" class="form-control" formControlName="category" placeholder="Nombre de la categoría"
+                [ngClass]="{'is-invalid': form.controls['category'].errors && submitted}">
+
+              @if (form.controls['category'].errors && submitted) {
+              <small class="input-error-message">Favor de ingresar un nombre de categoría válido</small>
+              }
+            </div>
+
+            <!-- tag  -->
+
+            <div class="mb-3">
+              <label for="tag" class="form-label">Tag<span class="input-required">*</span></label>
+              <input type="text" class="form-control" formControlName="tag" placeholder="Código de la categoría"
+                [ngClass]="{'is-invalid': form.controls['tag'].errors && submitted}">
+
+              @if (form.controls['tag'].errors && submitted) {
+              <small class="input-error-message">Favor de ingresar un código de categoría válido</small>
+              }
+            </div>
+
+
+            <!-- button  -->
+
+            <div class="form-button">
+              <button type="submit" class="btn btn-info btn-save">Guardar</button>
+            </div>
+
           </form>
         </div>
       </div>
-    </nav>
-  </header>
-  <main>
-    <div class="body-content">
-      <div class="card">
-        <div class="card-header">
-          <h4>Categorías</h4>
-        </div>
-        <div class="card-body">
-          <table class="table table-striped">
-            <thead>
-              <tr class="table-header">
-                <th scope="col">Category Id</th>
-                <th scope="col">Category</th>
-                <th scope="col">Tag</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for(category of categories; track category.category_id; let i = $index ) {
-              <tr>
-                <td>{{ category.category_id }}</td>
-                <td>{{ category.category }}</td>
-                <td>{{ category.tag }}</td>
-                <td>{{ category.status }}</td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        <div class="card-footer">
-          <small>19 de Septiembre de 2024</small>
-        </div>
-      </div>
     </div>
-  </main>
-  <footer></footer>
-</body>
+  </div>
+</main>

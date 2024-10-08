@@ -26,6 +26,34 @@
   text-align: right;
 }
 
+
+/* button  */
+
+.btn-new {
+  float: right;
+}
+
+.form-button {
+  margin: 24px;
+  text-align: center;
+}
+
+.btn-save {
+  width: 240px;
+}
+
+
+/* input  */
+
+.input-required {
+  color: red;
+}
+
+.input-error-message {
+  color: red;
+  margin: 4px;
+}
+
 /*!
  * Bootswatch v5.3.3 (https://bootswatch.com)
  * Theme: lux
