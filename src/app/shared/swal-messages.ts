@@ -1,9 +1,9 @@
 import Swal from "sweetalert2";
 
-export class SwalMessages {
+export class SwalMessages{
 
     // muestra mensaje de confirmación
-    successMessage(message: string) {
+    successMessage(message: string){
         Swal.fire({
             position: 'top-end',
             icon: 'success',
@@ -14,9 +14,9 @@ export class SwalMessages {
             timer: 2000
         });
     }
-
+   
     // muestra mensaje de error
-    errorMessage(message: string) {
+    errorMessage(message: string){
         Swal.fire({
             position: 'top-end',
             icon: 'error',
