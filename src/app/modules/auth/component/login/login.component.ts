@@ -33,7 +33,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/secured/landing');
+      this.router.navigateByUrl('/secured');
     } else {
       this.router.navigateByUrl('/login');
     }
