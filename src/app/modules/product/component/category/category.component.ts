@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
-import { SharedModule } from '../../../../shared/shared-module';
-import { FormBuilder, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
+import { Category } from '../../_model/category';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { SwalMessages } from '../../../../shared/swal-messages';
+import { SharedModule } from '../../../../shared/shared-module';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+
 
 
 declare var $: any; // jquery
