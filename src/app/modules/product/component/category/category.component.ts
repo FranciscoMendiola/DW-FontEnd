@@ -78,7 +78,7 @@ export class CategoryComponent {
         this.hideModalForm();
         this.modal ="normal";
       }, error: (e)=>{
-        this.swal.errorMessage("No se pudo actualizar la categoria. "+e.error.message); 
+        this.swal.errorMessage("No se pudo actualizar la categoria. "+e.error.message);  
       }
     });
   }
