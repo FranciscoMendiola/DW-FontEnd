@@ -1,6 +1,4 @@
-
 export class Category {
-
     category_id: number = 0;
     category: string = "";
     tag: string = "";
@@ -13,4 +11,3 @@ export class Category {
         this.status = status;
     }
 }
- 

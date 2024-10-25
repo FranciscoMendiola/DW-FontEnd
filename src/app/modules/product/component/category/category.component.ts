@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { CategoryService } from '../../_service/category.service';
 import { Category } from '../../_model/category';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { SwalMessages } from '../../../../shared/swal-messages';
+import { CategoryService } from '../../_service/category.service';
 import { SharedModule } from '../../../../shared/shared-module';
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
-
-
+import { FormBuilder, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { SwalMessages } from '../../../../shared/swal-messages';
 
 declare var $: any; // jquery
 
@@ -17,25 +15,21 @@ declare var $: any; // jquery
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
-
-
 export class CategoryComponent {
 
-  // Lista de categorías
-  categories: any = [];
- 
+  categories: Category[] = []; // lista de categorias
+  form: any;
+  current_date = new Date(); // hora y fecha actua
+  loading = false; // loading request
   submitted = false; // form submitted
   swal: SwalMessages = new SwalMessages(); // swal messages
-  form: any;
-  modal:String="normal";
-  id:any =null;
 
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getCategories();
 
     // Inicializacion el formulario en ngOnInit
@@ -47,94 +41,42 @@ export class CategoryComponent {
 
   onSubmit() {
 
-    this.submitted =true;
-    if(this.form.invalid)return;
-    this.submitted=false;
-
-      if(this.modal=="normal")      this.onSubmitCreate();
-      else                          this.onSubmitUpdate();
-    
-    this.modal="normal";
-  }
-
-  onSubmitCreate(){
-    this.categoryService.createCategory(this.form.value).subscribe({
-      next:(v) =>{  
-        this.swal.successMessage("La categoria ha sido creada");
-        this.getCategories();
-        this.hideModalForm();
-      
-      },
-      error: (e) =>{
-        this.swal.errorMessage("No se pudo crear la categoria "+e.error.message);
-      }
-    });
-  }
-
-  onSubmitUpdate(){
-    this.categoryService.updateCategory(this.form.value,this.id).subscribe({
-      next:(v) => {
-        this.swal.successMessage("La categoria ha sido actualizada");
-        this.getCategories();
-        this.hideModalForm();
-        this.modal ="normal";
-      }, error: (e)=>{
-        this.swal.errorMessage("No se pudo actualizar la categoria. "+e.error.message);  
-      }
-    });
-  }
-
-
-
-  getCategories(){
-    return this.categoryService.getCategories().subscribe({
-      next:(v)=>{
-        this.categories=v;
-        console.log(v);
-      },
-      error:(e)=>{
-        this.swal.errorMessage("No hay categorias ");
-      }
-    });
-  }
-
-  updateCategory(category:Category){
-    this.modal = "update";
-    this.id = category.category_id;
-
-    this.form.reset();
-    this.form.controls['category'].setValue(category.category);
-    this.form.controls['tag'].setValue(category.tag);
-
+    // validación del formulario 
+    this.submitted = true;
+    if (this.form.invalid) { return; }
     this.submitted = false;
-    $("#modalForm").modal("show");
-  }
 
- 
-  enableCategory(id:number){
-    this.categoryService.activateCategory(id).subscribe({
-      next:(v)=>{
-        this.swal.successMessage("La categoria ha sido activada");
+    this.categoryService.createCategory(this.form.value).subscribe({
+      next: (v) => {
+        console.log(v);
         this.getCategories();
-
-      },error:(e)=>{
-        this.swal.errorMessage("No se pudo activar la categoria"); 
+        this.hideModalForm();
+        this.form.reset();
+        this.swal.successMessage(v.message);
+      },
+      error: (e) => {
+        console.log(e);
+        this.swal.errorMessage(e.error.message);
       }
     });
   }
 
-  disableCategory(id:number){
-    this.categoryService.deleteCategory(id).subscribe({
-      next:(v)=>{
-        this.swal.successMessage("La categoria ha sido eliminada");
-        this.getCategories();
-
-      },error:(e)=>{
-        this.swal.errorMessage("No se pudo eliminar la categoria"); 
+  getCategories() {
+    this.loading = true;
+    this.categoryService.getCategories().subscribe({
+      next: (v) => {
+        // console.log(v);
+        this.categories = v;
+        this.loading = false;
+      },
+      error: (e) => {
+        console.log(e);
+        this.loading = false;
       }
     });
   }
 
+  // modal 
 
   showModalForm() {
     this.form.reset();

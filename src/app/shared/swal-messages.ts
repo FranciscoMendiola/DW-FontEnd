@@ -4,7 +4,6 @@ export class SwalMessages{
 
     // muestra mensaje de confirmación
     successMessage(message: string){
-        if(message==null){message ="No se pudo conectar con la base de datos."}
         Swal.fire({
             position: 'top-end',
             icon: 'success',
