@@ -10,7 +10,7 @@
         <div class="col">
 
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-info btn-new" (click)="showModalForm()">
+          <button type="button" class="btn btn-info btn-new" data-bs-toggle="modal"(click)="showModalForm()">
             Nueva Categoría
           </button>
 
@@ -29,19 +29,29 @@
           </tr>
         </thead>
         <tbody>
-          @for(category of categories; track category.category_id; let i = $index ) {
-          <tr>
-            <td>{{ category.category_id }}</td>
-            <td>{{ category.category }}</td>
-            <td>{{ category.tag }}</td>
-            <td> @if (category.status) {
-              Activo
-              } @else {
-              Inactivo
-              }
+          <tr *ngFor="let category of categories; track category">
+            <td  scope="row">{{category.category_id}} </td>
+            <td>{{category.category}} </td>
+            <td>{{category.tag}} </td>
+            <td>
+              <a *ngIf="category.status == 0" (click)="enableCategory(category.category_id)">
+                <div class="td-status td-status-disable">
+                  {{"inactivo"}}
+                </div>
+              </a>
+              <a *ngIf="category.status == 1" (click)="disableCategory(category.category_id)">
+                <div class="td-status td-status-enable">
+                  {{"activo"}}
+                </div>
+              </a>
+
             </td>
-          </tr>
-          }
+            <td>
+              <a (click)="updateCategory(category)" >
+                <fa-icon [icon]="faPencil"></fa-icon>
+              </a>
+            </td>
+        </tr>
         </tbody>
       </table>
     </div>
