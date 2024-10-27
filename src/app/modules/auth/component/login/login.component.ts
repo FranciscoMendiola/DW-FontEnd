@@ -15,7 +15,6 @@ import { CustomIconModule } from '../../../../shared/custom-icon-module';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-
 export class LoginComponent {
 
   loginForm = new FormGroup(
@@ -27,16 +26,14 @@ export class LoginComponent {
 
   public showLoading: boolean;
   private subscriptions: Subscription[] = [];
-  public isLoggedIn: boolean = false; // Nueva propiedad para el estado de login
 
   constructor(private router: Router, private authenticationService: AuthenticationService) {
-    this.showLoading = false;
+    this.showLoading = false;        
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authenticationService.isUserLoggedIn(); // Verifica si el usuario está logeado
-    if (this.isLoggedIn) {
-      this.router.navigateByUrl('/secured/landing');
+    if (this.authenticationService.isUserLoggedIn()) {
+      this.router.navigateByUrl('/secured');
     } else {
       this.router.navigateByUrl('/login');
     }
@@ -54,12 +51,15 @@ export class LoginComponent {
             this.authenticationService.saveToken(token);
             this.authenticationService.addUserToLocalCache(response.body);
             this.router.navigateByUrl('/secured');
-            this.showLoading = false;
-            this.isLoggedIn = true; // Actualiza el estado de login
-          } else {
-            console.log('El token devuelto no fue poblado');
+            this.showLoading = false; 
+          }else{
+            if (response.body === null) {
+              console.log('La API no devolvió cuerpo en la respuesta');
+              return;
+            }
+            console.log('El token devuelto no fue poblado')
             return;
-          }
+          }          
         },
         (errorResponse: HttpErrorResponse) => {
           alert(errorResponse.error.message);
@@ -69,12 +69,6 @@ export class LoginComponent {
     );
   }
 
-  public onLogout(): void {  // Nueva función para el logout
-    this.authenticationService.logOut();
-    this.isLoggedIn = false;  // Actualiza el estado de login
-    this.router.navigateByUrl('/login');
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -82,4 +76,5 @@ export class LoginComponent {
   get fg() {
     return this.loginForm.controls;
   }
+
 }

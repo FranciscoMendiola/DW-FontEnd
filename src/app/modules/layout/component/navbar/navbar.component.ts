@@ -11,4 +11,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+
+  currentUrl?: string;
+
+  constructor(private navService: NavService){}
+
+  ngOnInit() {
+    this.navService.currentUrl.subscribe((url: string) => { this.currentUrl = url;});
+  }
+
+  ngOnChanges() {
+    this.navService.currentUrl.subscribe((url: string) => { this.currentUrl = url});
+  }
 }

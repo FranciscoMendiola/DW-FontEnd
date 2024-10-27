@@ -15,24 +15,24 @@ export class AuthenticationService {
   private loggedInUsername: string | null;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) { 
     this.token = '';
     this.loggedInUsername = '';
   }
 
-  public login(credenciales: { username?: string, password?: string }): Observable<HttpResponse<LoginResponse>> {
+  public login(credenciales: {username?: string, password?: string}): Observable<HttpResponse<LoginResponse>> {
     return this.http.post<LoginResponse>(`${api_dwb_uri}/login`, credenciales, { observe: 'response' });
   }
 
-  public register(user: User): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${api_dwb_uri}/user`, user);
+  public register(user: User): Observable<{message: string}> {
+    return this.http.post<{message: string}>(`${api_dwb_uri}/user`, user);
   }
 
   public logOut(): void {
     this.token = null;
     this.loggedInUsername = null;
     localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem('token');    
   }
 
   public saveToken(token: string): void {
@@ -45,9 +45,9 @@ export class AuthenticationService {
   }
 
   public getUserFromLocalCache(): User | null {
-
+    
     let usuarioCache = localStorage.getItem('user');
-    if (usuarioCache !== null) {
+    if(usuarioCache !== null){
       return JSON.parse(usuarioCache);
     }
     return null;
@@ -57,13 +57,13 @@ export class AuthenticationService {
     this.token = localStorage.getItem('token');
   }
 
-  public getToken(): string | null {
+  public getToken(): string | null{
     return this.token;
   }
 
   public isUserLoggedIn(): boolean {
     this.loadToken();
-    if (this.token != null && this.token !== '') {
+    if (this.token != null && this.token !== ''){
       if (this.jwtHelper.decodeToken(this.token).sub != null || '') {
         if (!this.jwtHelper.isTokenExpired(this.token)) {
           this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
@@ -76,7 +76,4 @@ export class AuthenticationService {
     }
     return false;
   }
-
-
-
 }

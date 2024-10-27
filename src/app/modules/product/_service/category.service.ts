@@ -16,11 +16,27 @@ export class CategoryService {
     private http: HttpClient
   ) { }
 
+  disableCategory(id: number): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source + "/" + id);
+  }
+
+  enableCategory(id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + id + "/activate", null);
+  }
+
   createCategory(category: any): Observable<any> {
     return this.http.post(api_dwb_uri + this.source, category);
   }
 
   getCategories(): Observable<any> {
     return this.http.get(api_dwb_uri + this.source);
+  }
+
+  updateCategory(category: any, id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + id, category);
+  }
+
+  getActiveCategories(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/active");
   }
 }
