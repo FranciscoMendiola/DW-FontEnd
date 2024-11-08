@@ -11,12 +11,11 @@ import { AuthenticationService } from '../../_service/authentication.service';
 })
 export class SecuredComponent {
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) {}
+  constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   public onLogOut(): void {
     this.authenticationService.logOut();
     this.router.navigate(['/login']);
     alert(`Sesión cerrada exitosamente`);
   }
-
 }

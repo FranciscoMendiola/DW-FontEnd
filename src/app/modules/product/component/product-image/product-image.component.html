@@ -1,0 +1,114 @@
+<div class="card-header">
+    <div class="btn-return" (click)="redirect('product')">
+        <i class="ph ph-arrow-circle-left"></i>
+        Regresar
+    </div>
+</div>
+
+
+<div class="card-body">
+    <div class="row">
+
+
+        <!-- product image  -->
+
+        <div class="col-md-4">
+            <div class="card">
+
+
+                <!-- image  -->
+
+                <div class="card-body-customer text-center">
+                    <!-- @if (product.image.image) {
+                    <img src="{{ product.image.image }}" class="customer-image">  
+                }@else {
+                    <img src="assets/user-logo.png" class="customer-image">  
+                } -->
+                </div>
+
+
+                <!-- button  -->
+
+                <div class="text-center">
+                    <label for="uploadImage">
+                        <input type="file" (change)="fileChangeHandler($event)" id="uploadImage" class="d-none">
+                        <div class="edit-customer-image ">
+                            <i class="ph ph-note-pencil icon-text-button"></i>
+                            Editar imagen
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- customer data  -->
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body-customer">
+
+
+                    <!-- name  -->
+
+
+                    <div class="customer-title">
+                        {{ product.product }}
+                    </div>
+
+
+                    <table class="table">
+                        <tbody>
+
+                            <!-- gtin  -->
+                            <tr>
+                                <th class="col-md-4">GTIN</th>
+                                <td>{{ product.gtin }}</td>
+                            </tr>
+
+                            <!-- price  -->
+                            <tr>
+                                <th class="col-md-4">PRECIO</th>
+                                <td>{{ product.price }}</td>
+                            </tr>
+
+                            <!-- status  -->
+                            <tr>
+                                <th class="col-md-4">Status</th>
+                                <td>{{ product.status }}</td>
+                            </tr>
+
+                            <!-- stock  -->
+                            <tr>
+                                <th class="col-md-4">Stock</th>
+                                <td>{{ product.stock }}</td>
+                            </tr>
+
+                            <!-- description  -->
+
+                            <tr>
+                                <th class="col-md-4">Descripcion</th>
+                                <td>{{ product.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <!-- buttons  -->
+
+
+                    <button type="button" class="btn btn-primary btn-edith">
+                        <i class="ph ph-note-pencil"></i>
+                        Editar
+                    </button>
+
+
+                    <button type="button" class="btn btn-danger btn-delete">
+                        <i class="ph ph-trash"></i>
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -25,15 +25,19 @@
           </div>
           <span class="help-block" style="color:red;" *ngIf="fg.password.invalid && fg.password.touched">Ingresa la
             contraseña.</span>
-          <div class="d-flex justify-content-center mt-3">
-            <button type="submit" [disabled]="loginForm.invalid || showLoading" name="button"
-              class="btn btn-dark form-button">
+          <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" [disabled]="loginForm.invalid || showLoading" name="button" class="btn login_btn">
               <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-              <span class="form-button" *ngIf="showLoading">Cargando...</span>
-              <span class="form-button" *ngIf="!showLoading">Login</span>
+              <span *ngIf="showLoading">Cargando...</span>
+              <span *ngIf="!showLoading">Login</span>
             </button>
           </div>
         </form>
+      </div>
+      <div class="mt-4">
+        <div class="d-flex justify-content-center">
+          ¿Necesitas una cuenta? <a routerLink="/register">&nbsp;Registrate</a>
+        </div>
       </div>
     </div>
   </div>

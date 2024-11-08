@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { NgxPhotoEditorModule } from "ngx-photo-editor";
 
 @NgModule({
-    imports:[FormsModule,ReactiveFormsModule, CommonModule,FontAwesomeModule],
-    exports:[FormsModule,ReactiveFormsModule, CommonModule, FontAwesomeModule],
+    imports: [FormsModule, ReactiveFormsModule, CommonModule, NgxPhotoEditorModule  ],
+    exports: [FormsModule, ReactiveFormsModule, CommonModule, NgxPhotoEditorModule  ],
 })
 export class SharedModule{}
