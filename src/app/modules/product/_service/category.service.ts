@@ -31,7 +31,8 @@ export class CategoryService {
   getCategories(): Observable<any> {
     return this.http.get(api_dwb_uri + this.source);
   }
-
+  getCategory(id:number):Observable<any>{
+    return this.http.get(api_dwb_uri+this.source+"/"+id);
   updateCategory(category: any, id: number): Observable<any> {
     return this.http.put(api_dwb_uri + this.source + "/" + id, category);
   }
