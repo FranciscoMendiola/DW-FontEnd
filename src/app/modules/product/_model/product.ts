@@ -8,6 +8,6 @@ export class Product {
     price: number = 0;
     stock: number = 0;
     category_id: number = 0;
-    image: ProductImage = new ProductImage();
+    category: string = "";
     status: number = 0;
 }
