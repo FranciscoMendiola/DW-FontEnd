@@ -1,0 +1,41 @@
+table {
+    text-align: center;
+}
+
+td, .card-body, .card-cart-total {
+    background-color: aliceblue;
+}
+
+.btn-delete-product {
+    background-color: #d26464 !important;
+    color: white;
+    padding: 8px 10px 8px 10px;
+}
+
+.card-header, .card-title {
+    background-color: #013A55;
+    color: white;
+    padding: 20px;
+    padding-top: 30px;
+}
+
+.cart-image {
+    border: none;
+    box-shadow: none;
+    width: 450px;
+}
+
+.d-block {
+    height: 60px;
+}
+
+/* .default-image {
+    height: 45px;
+} */
+
+.text-empty-cart {
+    color: #013a55;
+    font-size: 50px;
+    font-style: oblique;
+    font-weight: bold;
+}

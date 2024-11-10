@@ -1,0 +1,69 @@
+<div class="card border-light mb-3">
+
+    <!-- Card header -->
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col">
+                <h4>Listado de Facturas</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card body -->
+    
+    <div class="card-body">
+
+        <!-- Customer Invoices table -->
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr class="table-primary">
+                    <th>No.</th>
+                    <th>Código</th>
+                    <th>Monto total</th>
+                    <th>Fecha de compra</th>
+                    <th>Más</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for(invoice of invoices | paginate: pageConfig; track invoice; let i = $index) {
+                    <tr>
+                        <td class="tr-data">{{ i + 1 }}</td>
+                        <td class="tr-data">{{ invoice.invoice_id }}</td>
+                        <td class="tr-data">{{ invoice.total | currency: 'USD' }}</td>
+                        <td class="tr-data">{{ invoice.created_at | date: 'dd/MM/yyyy' }}</td>
+                        <td class="tr-data">
+                            <div class="dropdown">
+
+                                <!-- Dots button -->
+
+                                <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+                                </button>
+
+                                <!-- Menu options -->
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item">
+                                        <i class="ph ph-eye icon-text-ul"></i>Ver detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination controls -->
+
+        <div class="pagination-container">
+            <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
+                (pageChange)="pageConfig.currentPage = $event">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

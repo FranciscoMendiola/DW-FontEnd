@@ -1,74 +1,83 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { AuthenticationService } from '../../_service/authentication.service';
+
+import { Component, OnInit } from '@angular/core';
+import { delay } from 'rxjs/operators';
+import { faKey, faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Subscription, switchMap, of } from 'rxjs';
+import { SwalMessages } from '../../../../shared/swal-messages';
+import { AuthenticationService } from '../../_service/authentication.service';
+import { Usuario } from '../../_model/usuario';
 import { LoginResponse } from '../../_model/login-response';
-import { CommonModule } from '@angular/common';
-import { CustomIconModule } from '../../../../shared/custom-icon-module';
+import { SharedModule } from '../../../../shared/shared-module';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, CustomIconModule],
+  imports:[SharedModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
 
-  loginForm = new FormGroup(
-    {
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)])
-    }
-  )
+export class LoginComponent implements OnInit {
+
+  swal: SwalMessages = new SwalMessages(); // Swal messages
+
+  usernameIcon = faUserSecret;
+  passwordIcon = faKey;
+  
+  loginForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl('')
+  }, [Validators.required])
 
   public showLoading: boolean;
-  private subscriptions: Subscription[] = [];
-
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
-    this.showLoading = false;        
+  private subscriptions: Subscription[] = [];    
+  
+  constructor(private authenticationService: AuthenticationService) {
+    this.showLoading = false;
   }
-
-  ngOnInit(): void {
-    if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/secured');
-    } else {
-      this.router.navigateByUrl('/login');
-    }
-  }
-
+  
+  ngOnInit(): void { }
+  
   public onLogin(): void {
-    this.showLoading = true;
-    var loginFormValue = this.loginForm.value as { username: string, password: string };
 
+    this.showLoading = true;      
+    var loginFormValue  = this.loginForm.value;
+    var usuario: Usuario = new Usuario();
+    usuario.username = loginFormValue['username'];
+    usuario.password = loginFormValue['password'];
+    
     this.subscriptions.push(
-      this.authenticationService.login(loginFormValue).subscribe(
+      of(null).pipe(
+        delay(1000),
+        switchMap(() => this.authenticationService.login(usuario))
+      ).subscribe(
         (response: HttpResponse<LoginResponse>) => {
-          if (response.body && response.body.token) {
-            const token = response.body.token;
-            this.authenticationService.saveToken(token);
-            this.authenticationService.addUserToLocalCache(response.body);
-            this.router.navigateByUrl('/secured');
-            this.showLoading = false; 
-          }else{
-            if (response.body === null) {
-              console.log('La API no devolvió cuerpo en la respuesta');
-              return;
-            }
-            console.log('El token devuelto no fue poblado')
+          if(response.body  === null || response.body.token === null) {
+            console.log('La respuesta no devuelve el contenido esperado')
             return;
-          }          
+          }
+
+          const token = response.body.token;
+          this.authenticationService.saveToken(token);
+          if(response.body === null) {
+            console.log('La API no devolvió cuerpo en la respuesta');
+            return;
+          }
+
+          this.authenticationService.addUserToLocalCache(response.body);
+          this.showLoading = false;
+          window.location.reload();
         },
         (errorResponse: HttpErrorResponse) => {
-          alert(errorResponse.error.message);
+          this.swal.errorMessage(errorResponse.error.message);
           this.showLoading = false;
         }
       )
     );
   }
-
+  
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -76,5 +85,4 @@ export class LoginComponent {
   get fg() {
     return this.loginForm.controls;
   }
-
 }

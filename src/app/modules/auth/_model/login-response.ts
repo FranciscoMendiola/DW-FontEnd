@@ -1,11 +1,12 @@
-export class LoginResponse{    
-    token: string = '';
-    rol: string = '';
-    user: string = '';
+export class LoginResponse {
 
-    constructor(token: string, rol: string, user: string){
-        this.token = token;
-        this.rol = rol;
-        this.user = user;
+    token: string;
+    user: string;
+    rol: string;
+
+    constructor() {
+        this.rol = '';
+        this.user = '';
+        this.token = '';
     }
 }
