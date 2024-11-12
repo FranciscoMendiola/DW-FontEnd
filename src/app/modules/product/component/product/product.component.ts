@@ -14,7 +14,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
@@ -40,7 +40,7 @@ export class ProductComponent {
     private router: Router,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
@@ -57,15 +57,15 @@ export class ProductComponent {
     }
 
 
-  // Product form
-  this.form = this.formBuilder.group({
-    product: ["", [Validators.required]],
-    gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
-    description: ["", [Validators.required]],
-    price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-    stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-    category_id: [0, [Validators.required]],
-  });
+    // Product form
+    this.form = this.formBuilder.group({
+      product: ["", [Validators.required]],
+      gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
+      description: ["", [Validators.required]],
+      price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+      stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+      category_id: [0, [Validators.required]],
+    });
   }
 
   onSubmit() {
@@ -90,7 +90,7 @@ export class ProductComponent {
   getProducts() {
     this.productService.getProducts().subscribe({
       next: (v) => {
-        this.products = v.body!;
+        this.products = v;
       },
       error: (e) => {
         console.log(e);
@@ -143,7 +143,7 @@ export class ProductComponent {
         });
       }
     });
-  } 
+  }
 
   showProductDetails(gtin: string) {
     this.router.navigate(['product/' + gtin]);

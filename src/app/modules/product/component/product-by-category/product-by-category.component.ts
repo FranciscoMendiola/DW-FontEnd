@@ -7,9 +7,12 @@ import { ProductImage } from '../../_model/product/product-image';
 import { ProductImageService } from '../../_service/product-image.service';
 import { ProductService } from '../../_service/product.service';
 import { SwalMessages } from '../../../../shared/swal-messages';
+import { SharedModule } from '../../../../shared/shared-module';
 
 @Component({
   selector: 'app-product-by-category',
+  standalone: true,
+  imports: [SharedModule],
   templateUrl: './product-by-category.component.html',
   styleUrl: './product-by-category.component.css'
 })
