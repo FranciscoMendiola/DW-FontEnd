@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
-import { SharedModule } from '../../../../shared/shared-module';
-import { DtoProductList } from '../../_dto/dto-product-list';
-import { Category } from '../../_model/category';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SwalMessages } from '../../../../shared/swal-messages';
+import { Category } from '../../_model/category/category';
 import { CategoryService } from '../../_service/category.service';
+import { Component } from '@angular/core';
+import { DtoProductList } from '../../_dto/dto-product-list';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../_service/product.service';
 import { Router } from '@angular/router';
+import { PagingConfig } from '../../../../shared/paging-config';
+import { SwalMessages } from '../../../../shared/swal-messages';
+import { SharedModule } from '../../../../shared/shared-module';
 
 declare var $: any; // JQuery
 
@@ -24,21 +25,37 @@ export class ProductComponent {
 
   categories: Category[] = []; // category list
 
-  current_date = new Date(); // hora y fecha actual
-  loading = false; // loading request
-  submitted = false; // Form submitted
+  page: number | Event = 1;
+
   form: any;
+
+  submitted = false; // Form submitted
+
   swal: SwalMessages = new SwalMessages(); // swal messages
 
   constructor(
-    private router: Router,
     private categoryService: CategoryService,
     private productService: ProductService,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) { }
+
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalItems: number = 0;
+
+  pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
     this.getProducts();
+    this.getActiveCategories();
+
+    this.pageConfig = {
+      itemsPerPage: this.itemsPerPage,
+      currentPage: this.currentPage,
+      totalItems: this.totalItems
+    }
+
 
     // Product form
     this.form = this.formBuilder.group({
@@ -51,60 +68,6 @@ export class ProductComponent {
     });
   }
 
-  disableProduct(id: number) {
-    this.swal.confirmMessage.fire({
-      title: "Favor de confirmar la eliminación",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.productService.disableProduct(id).subscribe({
-          next: (v) => {
-            this.swal.successMessage(v.message);
-            this.getProducts();
-          },
-          error: (e) => {
-            console.log(e);
-            this.swal.errorMessage(e.error.message);
-          }
-        });
-      }
-    });
-  }
-
-  enableProduct(id: number) {
-    this.swal.confirmMessage.fire({
-      title: "Favor de confirmar la activación",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.productService.enableProduct(id).subscribe({
-          next: (v) => {
-            this.swal.successMessage(v.message);
-            this.getProducts();
-          },
-          error: (e) => {
-            console.log(e);
-            this.swal.errorMessage(e.error.message);
-          }
-        });
-      }
-    });
-  }
-
-  getProducts() {
-    this.loading = true;
-    this.productService.getProducts().subscribe({
-      next: (v) => {
-        this.products = v.sort((a: { category_id: number; }, b: { category_id: number; }) => a.category_id - b.category_id);
-        this.loading = false;
-        this.current_date = new Date();
-      },
-      error: (e) => {
-        this.loading = false;
-        console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
-      }
-    });
-  }
-
   onSubmit() {
     // validate form
     this.submitted = true;
@@ -113,7 +76,7 @@ export class ProductComponent {
 
     this.productService.createProduct(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.message); // show message
+        this.swal.successMessage(v.body!.message); // show message
         this.getProducts(); // reload products
         this.hideModalForm(); // close modal
       },
@@ -124,25 +87,10 @@ export class ProductComponent {
     });
   }
 
-  // modals 
-
-  showModalForm() {
-    $("#modalForm").modal("show");
-    this.getActiveCategories();
-    this.form.reset();
-    this.submitted = false;
-  }
-
-  hideModalForm() {
-    $("#modalForm").modal("hide");
-  }
-
-  // catalogues 
-
-  getActiveCategories() {
-    this.categoryService.getActiveCategories().subscribe({
+  getProducts() {
+    this.productService.getProducts().subscribe({
       next: (v) => {
-        this.categories = v;
+        this.products = v;
       },
       error: (e) => {
         console.log(e);
@@ -151,7 +99,77 @@ export class ProductComponent {
     });
   }
 
-  showProduct(gtin: string) {
+  disableProduct(id: number) {
+    this.swal.confirmMessage.fire({
+      title: 'Favor de confirmar la desactivación del producto',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.productService.disableProduct(id).subscribe({
+          next: (v) => {
+            this.swal.successMessage(v.body!.message); // show message
+            this.getProducts(); // reload products
+          },
+          error: (e) => {
+            console.error(e);
+            this.swal.errorMessage(e.error!.message); // show message
+          }
+        });
+      }
+    });
+  }
+
+  enableProduct(id: number) {
+    this.swal.confirmMessage.fire({
+      title: 'Favor de confirmar la activación del producto',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.productService.enableProduct(id).subscribe({
+          next: (v) => {
+            this.swal.successMessage(v.body!.message); // show message
+            this.getProducts(); // reload products
+          },
+          error: (e) => {
+            console.error(e);
+            this.swal.errorMessage(e.error!.message); // show message
+          }
+        });
+      }
+    });
+  }
+
+  showProductDetails(gtin: string) {
     this.router.navigate(['product/' + gtin]);
+  }
+
+  showModalForm() {
+    $("#modalForm").modal("show");
+    this.form.reset();
+    this.submitted = false;
+  }
+
+  hideModalForm() {
+    $("#modalForm").modal("hide");
+  }
+
+  // Catalogues 
+
+  getActiveCategories() {
+    this.categoryService.getActiveCategories().subscribe({
+      next: (v) => {
+        this.categories = v.body!;
+      },
+      error: (e) => {
+        console.log(e);
+        this.swal.errorMessage(e.error!.message); // show message
+      }
+    });
   }
 }

@@ -1,0 +1,62 @@
+
+.card-body, .card-image {
+    background-color: aliceblue;
+}
+
+.card-image {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-image:hover .hover-text {
+    display: block;
+}
+
+.card-image img {
+    transition: filter 0.3s ease;
+    width: 100%;
+}
+
+.card-image:hover img {
+    filter: brightness(30%);
+}
+
+.card-header {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    padding-top: 30px;
+    margin-top: 30px;
+}
+
+.default-image {
+    height: 49vh;
+}
+
+.d-block {
+    height: 48vh;
+}
+
+.hover-text {
+    color: white;
+    display: none;
+    font-size: 24px;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: 41%; 
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.text-center {
+    background-color: #04738c;
+    color: white;
+    padding: 15px;
+}
+
+.text-center h3 {
+    font-size: x-large;
+}

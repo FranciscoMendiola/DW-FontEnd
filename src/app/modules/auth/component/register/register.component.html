@@ -1,68 +1,89 @@
-<div class="container" style="margin-top: 100px;">
+<div class="container" style="margin: 12px 0px;">
     <div class="d-flex justify-content-center h-50">
         <div class="user_card">
             <div class="d-flex justify-content-center">
-                <div style="margin-top: 10px;margin-bottom:-90px;">
-                </div>
+                <div style="margin-top: 10px;margin-bottom:-90px;"></div>
             </div>
+
             <div class="d-flex justify-content-center form_container">
-                <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+                <form #formularioLogin="ngForm" (ngSubmit)="onSubmit()">   
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="user"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon [icon]="userIcon"></fa-icon></span>
                         </div>
-                        <input type="text" class="form-control" name="name" placeholder="Nombre" required
-                            formControlName="name">
+
+                        <input type="text" class="form-control" name="name" placeholder="Nombre(s)"
+                            [(ngModel)]="usuario.name" required>
                     </div>
+
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="user-plus"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon [icon]="surnameIcon"></fa-icon></span>
                         </div>
-                        <input type="text" class="form-control" name="surname" placeholder="Apellido" required
-                            formControlName="surname">
+
+
+                        <input type="text" class="form-control" name="surname" placeholder="Apellido(s)"
+                            [(ngModel)]="usuario.surname" required>
                     </div>
+
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="calculator"></fa-icon></span>
-                        </div>
-                        <input type="text" class="form-control" name="rfc" placeholder="RFC" required
-                            formControlName="rfc">
+                            <span class="input-group-text"><fa-icon [icon]="addressIcon"></fa-icon></span>
+                        </div> 
+
+                        <input type="text" class="form-control" name="address" placeholder="Dirección"
+                            [(ngModel)]="usuario.address" required>
                     </div>
+
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="mail-bulk"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon [icon]="mailIcon"></fa-icon></span>
                         </div>
-                        <input type="mail" class="form-control" name="mail" placeholder="Mail" required
-                            formControlName="mail">
+
+                        <input type="mail" class="form-control" name="mail" placeholder="Email"
+                            [(ngModel)]="usuario.mail" required>
                     </div>
+
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="key"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon [icon]="passwordIcon"></fa-icon></span>
                         </div>
-                        <input type="password" class="form-control" name="password" placeholder="Password" required
-                            formControlName="password">
+
+                        <input type="password" class="form-control" name="password" placeholder="Contraseña"
+                            [(ngModel)]="usuario.password" required>
                     </div>
+
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon icon="id-badge"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon [icon]="regionIcon"></fa-icon></span>
                         </div>
-                        <input type="text" class="form-control" name="username" placeholder="Username" required
-                            formControlName="username">
+
+                        <input type="number" class="form-control" name="region" placeholder="Region"
+                            [(ngModel)]="usuario.region_id" required>
                     </div>
-                    <div class="d-flex justify-content-center mt-3 login_container">
-                        <button [disabled]="registerForm.invalid || showLoading" type="submit" name="button"
-                            class="btn login_btn">
-                            <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-                            <span *ngIf="showLoading">Cargando...</span>
-                            <span *ngIf="!showLoading">Registrar</span>
-                        </button>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><fa-icon [icon]="rfcIcon"></fa-icon></span>
+                        </div>
+
+                        <input type="text" class="form-control" name="rfc" placeholder="RFC"
+                            [(ngModel)]="usuario.rfc" required>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><fa-icon [icon]="usernameIcon"></fa-icon></span>
+                        </div>
+                        
+                        <input type="text" class="form-control" name="username" placeholder="Username"
+                            [(ngModel)]="usuario.username" required>
+                    </div>
+
+                    <div class="form-button">
+                        <button type="submit" class="btn btn-dark btn-new" [disabled]="formularioLogin.invalid">Enviar</button>
                     </div>
                 </form>
-            </div>
-            <div class="mt-4">
-                <div class="d-flex justify-content-center links">
-                    ¿Ya tienes una cuenta? <a routerLink="/login" class="ml-2">&nbsp;Ingresa</a>
-                </div>
             </div>
         </div>
     </div>

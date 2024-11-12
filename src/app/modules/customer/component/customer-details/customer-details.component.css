@@ -1,0 +1,81 @@
+hr {
+    color: #013a55;
+    display: inline-block;
+    width: 60%;
+}
+
+.col {
+    margin-top: 30px;
+}
+
+th label {
+    color: #757883;
+    font-size: large;
+    padding: 0px 0px 0px 15px;
+}
+
+td, th, .card-body-customer, .card-image {
+    background-color: #f0f8ff;
+}
+
+.card-body-customer {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-red {
+    color: #CA2A4A;
+}
+
+.customer-table {
+    border-color: transparent !important;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.customer-table thead, .customer-table tbody {
+    display: block;
+    width: 100%;
+}
+
+.customer-table tbody {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.customer-table tr {
+    display: flex;
+    width: 100%;
+}
+
+.d-block, .default-image {
+    border-radius: 50%;
+    height: 68.5vh;
+}
+
+.hr-container {
+    text-align: center;
+}
+
+.label-address, .label-mail, .label-name, .label-region, .label-rfc {
+    color: #013a55;
+    font-style: italic;
+    font-weight: bold;
+    margin: 0px 0px 0px 15px;
+    text-align: left;
+}
+
+.label-data {
+    color: #3DB6B3;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.label-data-container {
+    text-align: center;
+}
+
+.td-data {
+    height: 77.5px;
+    width: 100%;
+}
