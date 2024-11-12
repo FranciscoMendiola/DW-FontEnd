@@ -1,0 +1,33 @@
+<div class="card border-light mb-3">
+
+    <!-- Card header -->
+
+    <div class="card-header">
+        <h4>{{ category.category }}</h4>
+    </div>
+
+    <!-- Card body -->
+
+    <div class="card-body">
+        <div class="row">
+            @for (product of products; track product; let i = $index) {
+                <div class="col-md-4">
+                    <div class="card card-image" (click)="navigateToView(product.gtin)">
+                        <div class="hover-text">{{ product.product + "\n$" + product.price}}</div>
+                        <img *ngIf="images[product.product_id] && images[product.product_id].length > 0; else defaultImage"
+                            [src]="images[product.product_id][0].image !== '' ? images[product.product_id][0].image : 'assets/images/default-image.png'"
+                            class="d-block w-100" alt="...">
+                        
+                        <div class="text-center">
+                            <h3>{{ product.product }}</h3>
+                        </div>
+                    </div>
+                    
+                    <ng-template #defaultImage>
+                        <img src="assets/images/default-image.png" alt="..." class="default-image">
+                    </ng-template>
+                </div>
+            }
+        </div>
+    </div>
+</div>
