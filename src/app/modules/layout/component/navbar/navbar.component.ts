@@ -1,9 +1,9 @@
 
-import { Category } from '../../../product/_model/category/category';
+import { Category } from '../../../product/_model/category';
 import { CategoryService } from '../../../product/_service/category.service';
 import { CartService } from '../../../invoice/_service/cart.service';
 import { Component } from '@angular/core';
-import { Customer } from '../../../customer/_model/customer/customer';
+import { Customer } from '../../../customer/_model/customer';
 import { CustomerService } from '../../../customer/_service/customer.service';
 import { Router } from '@angular/router';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -17,12 +17,12 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [SharedModule,LoginComponent,RegisterComponent],
+  imports: [SharedModule, LoginComponent, RegisterComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 
-export class NavbarComponent { 
+export class NavbarComponent {
 
   categories: Category[] = []; // Category List
 
@@ -83,7 +83,7 @@ export class NavbarComponent {
       }
     });
   }
-  
+
   logout() {
     this.servicioAutenticacion.logOut();
     this.loggedIn = false;
@@ -109,7 +109,7 @@ export class NavbarComponent {
   showLoginModal() {
     $("#loginModal").modal("show");
   }
-  
+
   showRegisterModal() {
     $("#registerModal").modal("show");
   }

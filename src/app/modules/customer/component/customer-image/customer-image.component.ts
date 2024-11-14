@@ -1,12 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { Customer } from '../../_model/customer/customer';
-import { CustomerImage } from '../../_model/customer/customer-image';
+import { Customer } from '../../_model/customer';
+import { CustomerImage } from '../../_model/customer-image';
 import { CustomerImageService } from '../../_service/customer-image.service';
 import { CustomerService } from '../../_service/customer.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
-import { Region } from '../../_model/region/region';
+import { Region } from '../../_model/region';
 import { RegionService } from '../../_service/region.service';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { SharedModule } from '../../../../shared/shared-module';
@@ -14,14 +14,14 @@ import { SharedModule } from '../../../../shared/shared-module';
 declare var $: any; // JQuery
 
 @Component({
-  selector: 'app-customer-details',
+  selector: 'app-customer-image',
   standalone: true,
-  imports:[SharedModule],
-  templateUrl: './customer-details.component.html',
-  styleUrl: './customer-details.component.css'
+  imports: [SharedModule],
+  templateUrl: './customer-image.component.html',
+  styleUrl: './customer-image.component.css'
 })
 
-export class CustomerDetailsComponent {
+export class CustomerImageComponent {
 
   customer: any | Customer = new Customer; // customer
   rfc: any | number = 0;

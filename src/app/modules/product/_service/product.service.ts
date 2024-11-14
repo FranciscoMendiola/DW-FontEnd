@@ -3,7 +3,7 @@ import { DtoProductList } from '../_dto/dto-product-list';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../_model/product/product';
+import { Product } from '../_model/product';
 import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 import { ApiResponse } from '../../../shared/api-response';
 
@@ -32,7 +32,7 @@ export class ProductService {
   }
 
   updateProductStock(gtin: string, stock: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + gtin + "/stock"+ "/" + stock, null, { observe: 'response' });
+    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + gtin + "/stock" + "/" + stock, null, { observe: 'response' });
   }
 
   updateProduct(product: any, product_id: number): Observable<HttpResponse<ApiResponse>> {

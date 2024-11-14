@@ -2,7 +2,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Region } from '../_model/region/region';
+import { Region } from '../_model/region';
 import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 import { ApiResponse } from '../../../shared/api-response';
 

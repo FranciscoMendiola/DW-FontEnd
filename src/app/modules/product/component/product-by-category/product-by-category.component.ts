@@ -1,9 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { DtoProductList } from '../../_dto/dto-product-list';
-import { ProductImage } from '../../_model/product/product-image';
+import { ProductImage } from '../../_model/product-image';
 import { ProductImageService } from '../../_service/product-image.service';
 import { ProductService } from '../../_service/product.service';
 import { SwalMessages } from '../../../../shared/swal-messages';

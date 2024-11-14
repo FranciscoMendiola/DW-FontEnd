@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Region } from '../../_model/region/region';
+import { Region } from '../../_model/region';
 import { RegionService } from '../../_service/region.service';
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -11,7 +11,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-region',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './region.component.html',
   styleUrl: './region.component.css'
 })
@@ -36,7 +36,7 @@ export class RegionComponent {
     private formBuilder: FormBuilder,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
@@ -52,10 +52,10 @@ export class RegionComponent {
     }
 
     // Region form
-  this.form = this.formBuilder.group({
-    region: ["", [Validators.required]],
-    tag: ["", [Validators.required]],
-  });
+    this.form = this.formBuilder.group({
+      region: ["", [Validators.required]],
+      tag: ["", [Validators.required]],
+    });
   }
 
   onSubmit() {
@@ -118,11 +118,11 @@ export class RegionComponent {
 
   updateRegion(region: Region) {
     this.regionToUpdate = region.region_id;
-   
+
     this.form.reset();
     this.form.controls['region'].setValue(region.region);
     this.form.controls['tag'].setValue(region.tag);
-   
+
     this.submitted = false;
     $("#modalForm").modal("show");
   }

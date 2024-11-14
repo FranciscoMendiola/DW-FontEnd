@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CustomerService } from '../../_service/customer.service';
 import { DtoCustomerList } from '../../_dto/dto-customer-list';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Region } from '../../_model/region/region';
+import { Region } from '../../_model/region';
 import { RegionService } from '../../_service/region.service';
 import { Router } from '@angular/router';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -14,7 +14,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css'
 })
@@ -40,7 +40,7 @@ export class CustomerComponent {
     private router: Router,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
@@ -57,14 +57,14 @@ export class CustomerComponent {
     }
 
     // Customer form
-  this.form = this.formBuilder.group({
-    name: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
-    surname: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
-    rfc: ["", [Validators.required, Validators.pattern("^[ñA-Z]{3,4}[0-9]{6}[0-9A-Z]{3}$")]],
-    mail: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-    region_id: ["", [Validators.required]],
-    address: ["", [Validators.required]],
-  });
+    this.form = this.formBuilder.group({
+      name: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
+      surname: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
+      rfc: ["", [Validators.required, Validators.pattern("^[ñA-Z]{3,4}[0-9]{6}[0-9A-Z]{3}$")]],
+      mail: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      region_id: ["", [Validators.required]],
+      address: ["", [Validators.required]],
+    });
   }
 
   onSubmit() {
@@ -142,7 +142,7 @@ export class CustomerComponent {
         });
       }
     });
-  } 
+  }
 
   showCustomerDetails(rfc: string) {
     this.router.navigate(['customer/' + rfc]);

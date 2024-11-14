@@ -1,5 +1,5 @@
 
-import { Customer } from '../_model/customer/customer';
+import { Customer } from '../_model/customer';
 import { DtoCustomerList } from '../_dto/dto-customer-list';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';

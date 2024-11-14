@@ -1,4 +1,4 @@
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { DtoProductList } from '../../_dto/dto-product-list';

@@ -1,7 +1,7 @@
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SharedModule } from '../../../../shared/shared-module';
 import { SwalMessages } from '../../../../shared/swal-messages';
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
@@ -35,7 +35,7 @@ export class CategoryComponent {
     private formBuilder: FormBuilder
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
@@ -43,7 +43,7 @@ export class CategoryComponent {
 
   ngOnInit() {
     this.getCategories();
-    
+
     this.pageConfig = {
       itemsPerPage: this.itemsPerPage,
       currentPage: this.currentPage,
@@ -51,10 +51,10 @@ export class CategoryComponent {
     }
 
     // Category form
-  this.form = this.formBuilder.group({
-    category: ["", [Validators.required]],
-    tag: ["", [Validators.required]],
-  });
+    this.form = this.formBuilder.group({
+      category: ["", [Validators.required]],
+      tag: ["", [Validators.required]],
+    });
   }
 
   onSubmit() {
@@ -115,11 +115,11 @@ export class CategoryComponent {
 
   updateCategory(category: Category) {
     this.categoryToUpdate = category.category_id;
-   
+
     this.form.reset();
     this.form.controls['category'].setValue(category.category);
     this.form.controls['tag'].setValue(category.tag);
-   
+
     this.submitted = false;
     $("#modalForm").modal("show");
   }

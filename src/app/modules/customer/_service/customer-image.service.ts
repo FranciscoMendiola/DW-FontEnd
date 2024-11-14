@@ -1,5 +1,5 @@
 
-import { CustomerImage } from '../_model/customer/customer-image';
+import { CustomerImage } from '../_model/customer-image';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

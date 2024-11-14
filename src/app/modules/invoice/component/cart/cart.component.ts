@@ -4,8 +4,8 @@ import { Customer } from '../../../customer/_model/customer/customer';
 import { CustomerService } from '../../../customer/_service/customer.service';
 import { DtoCartDetails } from '../../_dto/dto-cart-details';
 import { Router } from '@angular/router';
-import { Product } from '../../../product/_model/product/product';
-import { ProductImage } from '../../../product/_model/product/product-image';
+import { Product } from '../../../product/_model/product';
+import { ProductImage } from '../../../product/_model/product-image';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { PagingConfig } from '../../../../shared/paging-config';
 
@@ -44,7 +44,7 @@ export class CartComponent {
     private router: Router,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 3;
   totalItems: number = 0;
 
