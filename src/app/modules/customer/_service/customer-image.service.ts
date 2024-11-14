@@ -18,7 +18,7 @@ export class CustomerImageService {
     private http: HttpClient
   ) { }
 
-  updateCustomerImage(customer_image: CustomerImage): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source, customer_image, { observe: 'response' });
+  updateCustomerImage(customer_image: any): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source, customer_image);
   }
 }

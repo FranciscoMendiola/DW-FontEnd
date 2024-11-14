@@ -75,7 +75,7 @@ export class NavbarComponent {
   getCategories() {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!;
+        this.categories = v;
       },
       error: (e) => {
         console.log(e);
@@ -96,7 +96,7 @@ export class NavbarComponent {
   getCustomerDetail() {
     this.customerService.getCustomerDetail().subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
         this.userProfileImage = this.customer.image?.image;
       },
       error: (e) => {

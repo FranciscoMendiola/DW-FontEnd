@@ -54,7 +54,7 @@ export class ProductByCategoryComponent {
   getCategory(category_id: number) {
     this.categoryService.getCategory(category_id).subscribe({
       next: (v) => {
-        this.category = v.body!;
+        this.category = v;
       },
       error: (e) => {
         console.log(e);
@@ -69,7 +69,7 @@ export class ProductByCategoryComponent {
     this.productService.getProductsByCategory(category_id).subscribe({
       next: (v) => {
         this.getCategory(this.category_id);
-        this.products = v.body!;
+        this.products = v;
         this.products.forEach(product => {
           this.getProductImages(product.product_id);
         });
@@ -84,7 +84,7 @@ export class ProductByCategoryComponent {
   getProductImages(product_id: number) {
     this.productImageService.getProductImages(product_id).subscribe({
       next: (v) => {
-        this.images[product_id] = v.body!;
+        this.images[product_id] = v;
       },
       error: (e) => {
         console.log(e);

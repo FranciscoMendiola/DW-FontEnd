@@ -80,7 +80,7 @@ export class CustomerImageComponent {
   onSubmit() {
     this.customerService.updateCustomer(this.form.value, this.customer.customer_id).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
 
         if (this.form.controls['rfc'].value != this.rfc) {
           this.rfc = this.form.controls['rfc'].value!;
@@ -106,7 +106,7 @@ export class CustomerImageComponent {
   getCustomer() {
     this.customerService.getCustomer(this.rfc).subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
         this.getRegion(this.customer.region_id);
       },
       error: (e) => {
@@ -136,7 +136,7 @@ export class CustomerImageComponent {
 
     this.customerImageService.updateCustomerImage(customerImage).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCustomer();
       },
       error: (e) => {
@@ -176,7 +176,7 @@ export class CustomerImageComponent {
   getRegion(region_id: number) {
     this.regionService.getRegion(region_id).subscribe({
       next: (v) => {
-        this.region = v.body!;
+        this.region = v;
       },
       error: (e) => {
         console.log(e);
@@ -188,7 +188,7 @@ export class CustomerImageComponent {
   getActiveRegions() {
     this.regionService.getActiveRegions().subscribe({
       next: (v) => {
-        this.regions = v.body!;
+        this.regions = v;
       },
       error: (e) => {
         console.log(e);

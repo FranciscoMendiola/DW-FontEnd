@@ -1,117 +1,116 @@
 @if (cart.length === 0) {
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="text-empty-cart text-center">Aún no tienes productos en tu carrito</div>
-    
-            <div class="card cart-image">
-                <img src="assets/images/empty-cart.png" alt="...">
-            </div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="text-empty-cart text-center">Aún no tienes productos en tu carrito</div>
+
+        <div class="card cart-image">
+            <img src="assets/images/empty-cart.png" alt="...">
         </div>
     </div>
+</div>
 } @else {
-    <div class="card border-light mb-3">
+<div class="card border-light mb-3">
 
-        <!-- Card header -->
-      
-        <div class="card-header">
-            <div class="row">
-                <div class="col">
-                    @if (cartItemCount < 2) {
-                        <h2>Carrito ({{ cartItemCount }} artículo)</h2>
+    <!-- Card header -->
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col">
+                @if (cartItemCount < 2) { <h2>Carrito ({{ cartItemCount }} artículo)</h2>
                     } @else {
-                        <h2>Carrito ({{ cartItemCount }} artículos)</h2>
-                    } 
-                </div>
-                
-                <div class="col">
-                    <button type="button" class="btn btn-secondary" style="float: right" (click)="deleteCart()">
-                        <i class="ph ph-plus-circle"></i>
-                        Vaciar carrito
-                    </button>
-                </div>
+                    <h2>Carrito ({{ cartItemCount }} artículos)</h2>
+                    }
+            </div>
+
+            <div class="col">
+                <button type="button" class="btn btn-secondary" style="float: right" (click)="clearCart()">
+                    <i class="ph ph-plus-circle"></i>
+                    Vaciar carrito
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Card body -->
+    <!-- Card body -->
 
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-8">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
 
-                    <!-- Cart Products -->
-            
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr class="table-primary">
-                                <th></th>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                    
-                        <tbody>
-                            @for (product of cart | paginate: pageConfig; track product; let i = $index) {
-                                <tr>
-                                    <td class="tr-data">
-                                        <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
-                                            class="d-block w-100" alt="...">
-                                    </td>
-                                    <td class="tr-data">{{ product.product.product }}</td>
-                                    <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
-                                    <td class="tr-data">{{ product.quantity }}</td>
-                                    <td class="tr-data">
-                                        <button class="btn btn-delete-product" (click)="removeFromCart(product.cart_id)">
-                                            <i class="ph ph-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    
-                    <!-- Pagination controls -->
-                    
-                    <div class="pagination-container">
-                        <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
-                            (pageChange)="pageConfig.currentPage = $event">
-                        </pagination-controls>
-                    </div>
+                <!-- Cart Products -->
+
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr class="table-primary">
+                            <th></th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (product of cart | paginate: pageConfig; track product; let i = $index) {
+                        <tr>
+                            <td class="tr-data">
+                                <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
+                                    class="d-block w-100" alt="...">
+                            </td>
+                            <td class="tr-data">{{ product.product.product }}</td>
+                            <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
+                            <td class="tr-data">{{ product.quantity }}</td>
+                            <td class="tr-data">
+                                <button class="btn btn-delete-product" (click)="removeFromCart(product.cart_id)">
+                                    <i class="ph ph-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- Pagination controls -->
+
+                <div class="pagination-container">
+                    <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
+                        (pageChange)="pageConfig.currentPage = $event">
+                    </pagination-controls>
                 </div>
+            </div>
 
-                <div class="col-md-4">
+            <div class="col-md-4">
 
-                    <!-- Cart Total -->
+                <!-- Cart Total -->
 
-                    <div class="card">
-                        <div class="card-cart-total text-center">
-                            <h2 class="card-title">Total {{ cartTotal | currency:'USD' }}</h2>
+                <div class="card">
+                    <div class="card-cart-total text-center">
+                        <h2 class="card-title">Total {{ cartTotal | currency:'USD' }}</h2>
 
-                            <br>
+                        <br>
 
-                            <div class="d-flex align-items-center justify-content-center mb-3">
-                                <i class="ph ph-truck mr-2" style="font-size: larger;"></i>&nbsp;
-                                <span>Envío gratis a todo el país</span>
-                            </div>
-
-                            <div class="d-flex align-items-center justify-content-center mb-3">
-                                <i class="ph ph-credit-card mr-2"></i>&nbsp;
-                                <span>Puedes pagar a meses&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            </div>
-
-                            <br>
-
-                            <button type="button" class="btn btn-secondary btn-buy btn-block" (click)="navigateToBuy()">
-                                <i class="ph ph-credit-card icon-text-button"></i>
-                                Comprar
-                            </button>
-
-                            <br><br>
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-truck mr-2" style="font-size: larger;"></i>&nbsp;
+                            <span>Envío gratis a todo el país</span>
                         </div>
+
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-credit-card mr-2"></i>&nbsp;
+                            <span>Puedes pagar a meses&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </div>
+
+                        <br>
+
+                        <button type="button" class="btn btn-secondary btn-buy btn-block" (click)="navigateToBuy()">
+                            <i class="ph ph-credit-card icon-text-button"></i>
+                            Comprar
+                        </button>
+
+                        <br><br>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 }

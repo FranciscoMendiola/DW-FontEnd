@@ -19,35 +19,35 @@ export class CustomerService {
     private http: HttpClient
   ) { }
 
-  getCustomers(): Observable<HttpResponse<DtoCustomerList[]>> {
-    return this.http.get<DtoCustomerList[]>(api_dwb_uri + this.source, { observe: 'response' });
+  getCustomers(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source);
   }
 
-  createCustomer(customer: any): Observable<HttpResponse<ApiResponse>> {
-    return this.http.post<ApiResponse>(api_dwb_uri + this.source, customer, { observe: 'response' });
+  createCustomer(customer: any): Observable<any> {
+    return this.http.post(api_dwb_uri + this.source, customer);
   }
 
-  deleteAccount(): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source, { observe: 'response' });
+  deleteAccount(): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source);
   }
 
-  updateCustomer(customer: any, customer_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + customer_id, customer, { observe: 'response' });
+  updateCustomer(customer: any, customer_id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + customer_id, customer);
   }
 
-  disableCustomer(customer_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source + "/" + customer_id, { observe: 'response' });
+  disableCustomer(customer_id: number): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source + "/" + customer_id);
   }
 
-  enableCustomer(customer_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + customer_id + "/activate", null, { observe: 'response' });
+  enableCustomer(customer_id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + customer_id + "/activate", null);
   }
 
-  getCustomer(rfc: string): Observable<HttpResponse<Customer>> {
-    return this.http.get<Customer>(api_dwb_uri + this.source + "/" + rfc, { observe: 'response' });
+  getCustomer(rfc: string): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/" + rfc);
   }
 
-  getCustomerDetail(): Observable<HttpResponse<Customer>> {
-    return this.http.get<Customer>(api_dwb_uri + this.source + "/detail", { observe: 'response' });
+  getCustomerDetail(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/detail");
   }
 }

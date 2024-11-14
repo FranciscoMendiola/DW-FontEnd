@@ -18,15 +18,15 @@ export class ProductImageService {
     private http: HttpClient
   ) { }
 
-  uploadProductImage(product_image: ProductImage): Observable<HttpResponse<ApiResponse>> {
-    return this.http.post<ApiResponse>(api_dwb_uri + this.source, product_image, { observe: 'response' });
+  uploadProductImage(product_image: ProductImage): Observable<any> {
+    return this.http.post(api_dwb_uri + this.source, product_image);
   }
 
-  getProductImages(product_id: number): Observable<HttpResponse<ProductImage[]>> {
-    return this.http.get<ProductImage[]>(api_dwb_uri + this.source + "/" + product_id, { observe: 'response' });
+  getProductImages(product_id: number): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/" + product_id);
   }
 
-  deleteProductImage(product_image_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source + "/" + product_image_id, { observe: 'response' });
+  deleteProductImage(product_image_id: number): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source + "/" + product_image_id);
   }
 }

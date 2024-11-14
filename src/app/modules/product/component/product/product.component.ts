@@ -76,7 +76,7 @@ export class ProductComponent {
 
     this.productService.createProduct(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getProducts(); // reload products
         this.hideModalForm(); // close modal
       },
@@ -110,7 +110,7 @@ export class ProductComponent {
       if (result.isConfirmed) {
         this.productService.disableProduct(id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getProducts(); // reload products
           },
           error: (e) => {
@@ -133,7 +133,7 @@ export class ProductComponent {
       if (result.isConfirmed) {
         this.productService.enableProduct(id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getProducts(); // reload products
           },
           error: (e) => {
@@ -164,7 +164,7 @@ export class ProductComponent {
   getActiveCategories() {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!;
+        this.categories = v;
       },
       error: (e) => {
         console.log(e);

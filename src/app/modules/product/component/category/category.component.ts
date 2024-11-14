@@ -75,7 +75,7 @@ export class CategoryComponent {
     // add category to category list
     this.categoryService.createCategory(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCategories(); // reload categories
         this.hideModalForm(); // close modal
       },
@@ -90,7 +90,7 @@ export class CategoryComponent {
     // add category to category list
     this.categoryService.updateCategory(this.form.value, this.categoryToUpdate).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCategories(); // reload categories
         this.hideModalForm(); // close modal
       },
@@ -104,7 +104,7 @@ export class CategoryComponent {
   getCategories() {
     this.categoryService.getCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!
+        this.categories = v
       },
       error: (e) => {
         console.log(e);
@@ -135,7 +135,7 @@ export class CategoryComponent {
       if (result.isConfirmed) {
         this.categoryService.disableCategory(category_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCategories(); // reload categories
           },
           error: (e) => {
@@ -158,7 +158,7 @@ export class CategoryComponent {
       if (result.isConfirmed) {
         this.categoryService.enableCategory(category_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCategories(); // reload categories
           },
           error: (e) => {

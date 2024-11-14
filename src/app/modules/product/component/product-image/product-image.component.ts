@@ -102,7 +102,7 @@ export class ProductImageComponent {
   onSubmit() {
     this.productService.updateProduct(this.form.value, this.product.product_id).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
 
         if (this.form.controls['gtin'].value != this.gtin) {
           this.gtin = this.form.controls['gtin'].value!;
@@ -128,7 +128,7 @@ export class ProductImageComponent {
   getProduct() {
     this.productService.getProduct(this.gtin).subscribe({
       next: (v) => {
-        this.product = v.body!;
+        this.product = v;
         this.getCategory(this.product.category_id);
         this.getProductImages(this.product.product_id);
       },
@@ -155,7 +155,7 @@ export class ProductImageComponent {
   getProductImages(product_id: number) {
     this.productImageService.getProductImages(product_id).subscribe({
       next: (v) => {
-        this.images = v.body!;
+        this.images = v;
       },
       error: (e) => {
         console.log(e);
@@ -171,7 +171,7 @@ export class ProductImageComponent {
 
     this.productImageService.uploadProductImage(productImage).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getProductImages(this.product.product_id); // reload products
         this.activeImageIndex = 0;
       },
@@ -234,7 +234,7 @@ export class ProductImageComponent {
       if (result.isConfirmed) {
         this.productImageService.deleteProductImage(productImage.product_image_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message);
+            this.swal.successMessage(v.message);
             this.getProductImages(productImage.product_id);
             this.activeImageIndex = 0;
           },
@@ -258,7 +258,7 @@ export class ProductImageComponent {
 
         this.cartService.addToCart(newItem).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message);
+            this.swal.successMessage(v.message);
             this.getCartItemCount();
             setTimeout(() => {
               window.location.reload();
@@ -343,7 +343,7 @@ export class ProductImageComponent {
   getCustomerDetail() {
     this.customerService.getCustomerDetail().subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
         this.rfc = this.customer.rfc;
       },
       error: (e) => {
@@ -358,7 +358,7 @@ export class ProductImageComponent {
   getCategory(category_id: number) {
     this.categoryService.getCategory(category_id).subscribe({
       next: (v) => {
-        this.category = v.body!;
+        this.category = v;
       },
       error: (e) => {
         console.log(e);
@@ -370,7 +370,7 @@ export class ProductImageComponent {
   getActiveCategories() {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!;
+        this.categories = v;
       },
       error: (e) => {
         console.log(e);

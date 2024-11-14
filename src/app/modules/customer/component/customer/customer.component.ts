@@ -75,7 +75,7 @@ export class CustomerComponent {
 
     this.customerService.createCustomer(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCustomers(); // reload customers
         this.hideModalForm(); // close modal
       },
@@ -89,7 +89,7 @@ export class CustomerComponent {
   getCustomers() {
     this.customerService.getCustomers().subscribe({
       next: (v) => {
-        this.customers = v.body!;
+        this.customers = v;
       },
       error: (e) => {
         console.log(e);
@@ -109,7 +109,7 @@ export class CustomerComponent {
       if (result.isConfirmed) {
         this.customerService.disableCustomer(customer_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCustomers(); // reload customers
           },
           error: (e) => {
@@ -132,7 +132,7 @@ export class CustomerComponent {
       if (result.isConfirmed) {
         this.customerService.enableCustomer(customer_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCustomers(); // reload customers
           },
           error: (e) => {
@@ -163,7 +163,7 @@ export class CustomerComponent {
   getActiveRegions() {
     this.regionService.getActiveRegions().subscribe({
       next: (v) => {
-        this.regions = v.body!;
+        this.regions = v
       },
       error: (e) => {
         console.log(e);

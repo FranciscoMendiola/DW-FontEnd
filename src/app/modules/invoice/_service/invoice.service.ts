@@ -19,15 +19,15 @@ export class InvoiceService {
     private http: HttpClient
   ) { }
 
-  getInvoices(): Observable<HttpResponse<DtoInvoiceList[]>> {
-    return this.http.get<DtoInvoiceList[]>(api_dwb_uri + this.source, { observe: 'response' });
+  getInvoice(id: number): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/" + id);
   }
 
-  generateInvoice(rfc: string): Observable<HttpResponse<ApiResponse>> {
-    return this.http.post<ApiResponse>(api_dwb_uri + this.source, rfc, { observe: 'response' });
+  getInvoices(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source);
   }
 
-  getInvoice(id: number): Observable<HttpResponse<Invoice>> {
-    return this.http.get<Invoice>(api_dwb_uri + this.source + "/" + id, { observe: 'response' });
+  generateInvoice(rfc: string): Observable<any> {
+    return this.http.post(api_dwb_uri + this.source, rfc);
   }
 }

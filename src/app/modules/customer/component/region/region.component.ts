@@ -77,7 +77,7 @@ export class RegionComponent {
     // add region to region list
     this.regionService.createRegion(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getRegions(); // reload regions
         this.hideModalForm(); // close modal
       },
@@ -92,7 +92,7 @@ export class RegionComponent {
     // add region to region list
     this.regionService.updateRegion(this.form.value, this.regionToUpdate).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getRegions(); // reload regions
         this.hideModalForm(); // close modal
         this.regionToUpdate = 0; // reset regionToUpdate
@@ -107,7 +107,7 @@ export class RegionComponent {
   getRegions() {
     this.regionService.getRegions().subscribe({
       next: (v) => {
-        this.regions = v.body!;
+        this.regions = v;
       },
       error: (e) => {
         console.log(e);
@@ -138,7 +138,7 @@ export class RegionComponent {
       if (result.isConfirmed) {
         this.regionService.disableRegion(region_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getRegions(); // reload regions
           },
           error: (e) => {
@@ -161,7 +161,7 @@ export class RegionComponent {
       if (result.isConfirmed) {
         this.regionService.enableRegion(region_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getRegions(); // reload regions
           },
           error: (e) => {
