@@ -1,14 +1,15 @@
-import { AuthenticationService } from '../../module/authentication/_service/authentication.service';
+
 import { catchError } from 'rxjs/operators';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthenticationService } from '../modules/auth/_service/authentication.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  
+
   constructor(private router: Router, private authService: AuthenticationService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -34,7 +35,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
           })
         }
-        
+
         return throwError(error);
       })
     );

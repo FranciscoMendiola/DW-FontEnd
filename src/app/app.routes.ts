@@ -5,7 +5,7 @@ import { RegisterComponent } from './modules/auth/component/register/register.co
 import { SecuredComponent } from './modules/auth/component/secured/secured.component';
 import { CategoryComponent } from './modules/product/component/category/category.component';
 import { ProductComponent } from './modules/product/component/product/product.component';
-import { authenticationGuard } from './modules/auth/_guard/authentication.guard';
+import { authenticationGuard } from './modules/auth/authentication.guard';
 import { HomeComponent } from './modules/home/home.component';
 import { ProductDetailsComponent } from './modules/product/component/product-details/product-details.component';
 import { CustomerComponent } from './modules/customer/component/customer/customer.component';

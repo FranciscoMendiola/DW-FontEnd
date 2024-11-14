@@ -6,82 +6,57 @@
             </div>
 
             <div class="d-flex justify-content-center form_container">
-                <form #formularioLogin="ngForm" (ngSubmit)="onSubmit()">   
+                <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="userIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="user"></fa-icon></span>
                         </div>
-
-                        <input type="text" class="form-control" name="name" placeholder="Nombre(s)"
-                            [(ngModel)]="usuario.name" required>
+                        <input type="text" class="form-control" name="name" placeholder="Nombre" required
+                            formControlName="name">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="surnameIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="user-plus"></fa-icon></span>
                         </div>
-
-
-                        <input type="text" class="form-control" name="surname" placeholder="Apellido(s)"
-                            [(ngModel)]="usuario.surname" required>
+                        <input type="text" class="form-control" name="surname" placeholder="Apellido" required
+                            formControlName="surname">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="addressIcon"></fa-icon></span>
-                        </div> 
-
-                        <input type="text" class="form-control" name="address" placeholder="Dirección"
-                            [(ngModel)]="usuario.address" required>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="mailIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="calculator"></fa-icon></span>
                         </div>
-
-                        <input type="mail" class="form-control" name="mail" placeholder="Email"
-                            [(ngModel)]="usuario.mail" required>
+                        <input type="text" class="form-control" name="rfc" placeholder="RFC" required
+                            formControlName="rfc">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="passwordIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="mail-bulk"></fa-icon></span>
                         </div>
-
-                        <input type="password" class="form-control" name="password" placeholder="Contraseña"
-                            [(ngModel)]="usuario.password" required>
+                        <input type="mail" class="form-control" name="mail" placeholder="Mail" required
+                            formControlName="mail">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="regionIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="key"></fa-icon></span>
                         </div>
-
-                        <input type="number" class="form-control" name="region" placeholder="Region"
-                            [(ngModel)]="usuario.region_id" required>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required
+                            formControlName="password">
                     </div>
-
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="rfcIcon"></fa-icon></span>
+                            <span class="input-group-text"><fa-icon icon="id-badge"></fa-icon></span>
                         </div>
-
-                        <input type="text" class="form-control" name="rfc" placeholder="RFC"
-                            [(ngModel)]="usuario.rfc" required>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><fa-icon [icon]="usernameIcon"></fa-icon></span>
-                        </div>
-                        
-                        <input type="text" class="form-control" name="username" placeholder="Username"
-                            [(ngModel)]="usuario.username" required>
+                        <input type="text" class="form-control" name="username" placeholder="Username" required
+                            formControlName="username">
                     </div>
 
                     <div class="form-button">
-                        <button type="submit" class="btn btn-dark btn-new" [disabled]="formularioLogin.invalid">Enviar</button>
+                        <button class="btn btn-dark btn-new" [disabled]="registerForm.invalid || showLoading"
+                            type="submit" name="button">
+                            <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
+                            <span *ngIf="showLoading">Cargando...</span>
+                            <span *ngIf="!showLoading">Registrar</span>
+                        </button>
                     </div>
                 </form>
             </div>
