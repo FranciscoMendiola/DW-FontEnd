@@ -90,7 +90,7 @@ export class ProductComponent {
   getProducts() {
     this.productService.getProducts().subscribe({
       next: (v) => {
-        this.products = v;
+        this.products = v.sort((a: { product_id: number; }, b: { product_id: number; }) => a.product_id - b.product_id);
       },
       error: (e) => {
         console.log(e);

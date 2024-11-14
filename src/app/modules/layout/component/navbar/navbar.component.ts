@@ -97,6 +97,7 @@ export class NavbarComponent {
     this.customerService.getCustomerDetail().subscribe({
       next: (v) => {
         this.customer = v;
+
         this.userProfileImage = this.customer.image?.image;
       },
       error: (e) => {

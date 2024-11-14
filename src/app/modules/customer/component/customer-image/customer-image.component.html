@@ -29,20 +29,22 @@
 <div class="card-body">
     <div class="row">
 
-        <!-- Customer Image -->
-
         <div class="col-md-5">
             <div class="card card-image">
                 <div class="card-body-customer text-center">
-                    <img src="{{ customer.image.image !== '' ? customer.image.image : defaultImage }}"
+                    <img src="{{ customer.image.image ? customer.image.image: 'assets/images/user-logo.png' }}"
                         class="d-block w-100" alt="...">
                 </div>
+
+                <!-- Delete button visible only if there are images -->
+
+                <button *ngIf="customer.image.image != ''" class="btn btn-dark" type="button"
+                    style="margin: 2%; align-items: center;" (click)="deleteActiveImage()">
+                    Eliminar imagen
+                </button>
             </div>
         </div>
 
-        <ng-template #defaultImage>
-            <img src="assets/images/default-image.png" alt="..." class="default-image">
-        </ng-template>
 
         <!-- Customer Data -->
 

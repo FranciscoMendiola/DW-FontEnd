@@ -104,7 +104,7 @@ export class CategoryComponent {
   getCategories() {
     this.categoryService.getCategories().subscribe({
       next: (v) => {
-        this.categories = v
+        this.categories = v.sort((a: { category_id: number; }, b: { category_id: number; }) => a.category_id - b.category_id);
       },
       error: (e) => {
         console.log(e);

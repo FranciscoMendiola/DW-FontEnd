@@ -87,8 +87,11 @@
 
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
                         aria-expanded="false">
-                        <img class="img-profile rounded-circle nav-user-img" [src]="userProfileImage" alt="...">
+                        <img class="img-profile rounded-circle nav-user-img"
+                            src="{{ userProfileImage ? userProfileImage:'assets/images/user-logo.png' }}" alt="...">
                     </a>
+
+
 
                     <!-- User options -->
 

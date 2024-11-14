@@ -9,7 +9,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-invoice',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './invoice.component.html',
   styleUrl: './invoice.component.css'
 })
@@ -25,7 +25,7 @@ export class InvoiceComponent {
     private invoiceService: InvoiceService,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
@@ -44,7 +44,7 @@ export class InvoiceComponent {
   getInvoices() {
     this.invoiceService.getInvoices().subscribe({
       next: (v) => {
-        this.invoices = v.body!;
+        this.invoices = v;
       },
       error: (e) => {
         console.log(e);

@@ -29,54 +29,54 @@
           <th>Gtin</th>
           <th>Producto</th>
           <th>Precio</th>
-          <th>Estatus</th>
+          <th>Status</th>
           <th>Más</th>
         </tr>
       </thead>
 
       <tbody>
         @for (product of products | paginate: pageConfig; track product; let i = $index) {
-          <tr>
-            <td class="tr-data">{{ i + 1 }}</td>
-            <td class="tr-data">{{ product.gtin }}</td>
-            <td class="tr-data">{{ product.product }}</td>
-            <td class="tr-data">{{ product.price | currency : "USD" }}</td>
-            <td class="tr-data">
-              <div class="td-status" [ngClass]="{'td-status-enable': product.status == 1, 'td-status-disable': product.status == 0}">
-                {{ product.status == 0 ? "Inactivo" : "Activo" }}
+        <tr>
+          <td class="tr-data">{{ product.product_id }}</td>
+          <td class="tr-data">{{ product.gtin }}</td>
+          <td class="tr-data">{{ product.product }}</td>
+          <td class="tr-data">{{ product.price | currency : "USD" }}</td>
+          <td class="tr-data">
+            <div class="tr-data"
+              [ngClass]="{'td-status-enable': product.status == 1, 'td-status-disable': product.status == 0}">
+              {{ product.status == 0 ? "Inactivo" : "Activo" }}
+            </div>
+          </td>
+
+          <td class="tr-data">
+            <div class="dropdown">
+
+              <!-- Dots button -->
+
+              <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+              </button>
+
+              <!-- Menu options -->
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" (click)="showProductDetails(product.gtin)">
+                  <i class="ph ph-eye icon-text-ul"></i>Ver detalles
+                </a>
+
+                <a *ngIf="product.status == 1" class="dropdown-item disable-item"
+                  (click)="disableProduct(product.product_id)">
+                  <i class="ph ph-x-circle icon-text-ul"></i>Desactivar
+                </a>
+
+                <a *ngIf="product.status == 0" class="dropdown-item enable-item"
+                  (click)="enableProduct(product.product_id)">
+                  <i class="ph ph-check-circle icon-text-ul"></i>Activar
+                </a>
               </div>
-            </td>
-
-            <td class="tr-data">
-              <div class="dropdown">
-
-                <!-- Dots button -->
-
-                <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
-                </button>
-
-                <!-- Menu options -->
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item"
-                    (click)="showProductDetails(product.gtin)">
-                    <i class="ph ph-eye icon-text-ul"></i>Ver detalles
-                  </a>
-  
-                  <a *ngIf="product.status == 1" class="dropdown-item disable-item"
-                    (click)="disableProduct(product.product_id)">
-                    <i class="ph ph-x-circle icon-text-ul"></i>Desactivar
-                  </a>
-
-                  <a *ngIf="product.status == 0" class="dropdown-item enable-item"
-                    (click)="enableProduct(product.product_id)">
-                    <i class="ph ph-check-circle icon-text-ul"></i>Activar
-                  </a>
-                </div>
-              </div>
-            </td>
-          </tr>
+            </div>
+          </td>
+        </tr>
         }
       </tbody>
     </table>

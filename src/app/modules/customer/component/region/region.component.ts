@@ -107,7 +107,7 @@ export class RegionComponent {
   getRegions() {
     this.regionService.getRegions().subscribe({
       next: (v) => {
-        this.regions = v;
+        this.regions = v.sort((a: { region_id: number; }, b: { region_id: number; }) => a.region_id - b.region_id);
       },
       error: (e) => {
         console.log(e);

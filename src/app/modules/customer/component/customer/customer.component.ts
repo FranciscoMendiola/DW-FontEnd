@@ -89,7 +89,7 @@ export class CustomerComponent {
   getCustomers() {
     this.customerService.getCustomers().subscribe({
       next: (v) => {
-        this.customers = v;
+        this.customers = v.sort((a: { customer_id: number; }, b: { customer_id: number; }) => a.customer_id - b.customer_id);
       },
       error: (e) => {
         console.log(e);
@@ -163,7 +163,7 @@ export class CustomerComponent {
   getActiveRegions() {
     this.regionService.getActiveRegions().subscribe({
       next: (v) => {
-        this.regions = v
+        this.regions = v;
       },
       error: (e) => {
         console.log(e);

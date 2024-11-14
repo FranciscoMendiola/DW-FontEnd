@@ -196,4 +196,23 @@ export class CustomerImageComponent {
       }
     });
   }
+
+
+  deleteActiveImage() {
+    this.swal.confirmMessage.fire({
+      title: 'Favor de confirmar la eliminación de la imagen',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.uploadCustomerImage('');
+        error: (e: { error: any; }) => {
+          console.error(e);
+          this.swal.errorMessage(e.error!.message);
+        }
+      }
+    })
+  }
 }
