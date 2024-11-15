@@ -28,6 +28,8 @@ export class ProductByCategoryComponent {
   category: Category = new Category();
   category_id: any | number = 0;
 
+  loading = false; // loading request
+
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
@@ -40,11 +42,14 @@ export class ProductByCategoryComponent {
     this.route.paramMap.subscribe(params => {
       const category_id = Number(params.get('category_id'));
       if (category_id) {
+        this.loading = true;
         this.category_id = category_id;
         this.getProductsByCategory(category_id);
         this.getCategory(category_id);
+        this.loading = false;
       } else {
         this.swal.errorMessage("¡Categoría Inexistente!");
+        this.loading = false;
       }
     });
   }
@@ -66,6 +71,7 @@ export class ProductByCategoryComponent {
   // Products
 
   getProductsByCategory(category_id: number) {
+    this.loading = true;
     this.productService.getProductsByCategory(category_id).subscribe({
       next: (v) => {
         this.getCategory(this.category_id);

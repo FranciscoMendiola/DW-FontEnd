@@ -27,11 +27,17 @@
                         aria-expanded="false">Categorías</a>
 
                     <div class="dropdown-menu nav-dropdown-menu">
+
+                        @if(categories.length>0){
                         @for(category of categories; track category) {
                         <a class="dropdown-item nav-dropdown-item"
                             href="/products/{{ category.category.toLowerCase() }}/{{ category.category_id }}">{{
                             category.category }}</a>
                         }
+                        } @else {
+                        <a class="dropdown-item nav-dropdown-item">¡No hay categorías disponibles!</a>
+                        }
+
                     </div>
                 </li>
 
@@ -103,6 +109,7 @@
 
                         <div class="dropdown-divider"></div>
                         }
+
 
                         <a class="dropdown-item nav-dropdown-item" (click)="logout()">Cerrar sesión</a>
                     </div>

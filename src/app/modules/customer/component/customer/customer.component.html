@@ -1,5 +1,6 @@
 <div class="card border-light mb-3">
 
+
     <!-- Card header -->
 
     <div class="card-header">
@@ -20,7 +21,21 @@
 
     <div class="card-body">
 
+        <!-- loading  -->
+
+        @if(loading) {
+        <div class="text-center">
+            <img src="assets/loading.gif" class="img-loading" alt="">
+        </div>
+        }
+
         <!-- Customer table -->
+
+        @if(!loading && customers.length == 0){
+        <div class="text-center table-empty">
+            <h4>No cuentas con clientes registrados</h4>
+        </div>
+        }@else {
 
         <table class="table">
             <thead class="thead-dark">
@@ -79,13 +94,18 @@
                 }
             </tbody>
         </table>
+        }
 
         <!-- Pagination controls -->
 
-        <div class="pagination-container">
-            <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
+        <div class="row pagination-container">
+            <div class="col"></div>
+            <pagination-controls class="col align-center" previousLabel="Anterior" nextLabel="Siguiente"
                 (pageChange)="pageConfig.currentPage = $event">
             </pagination-controls>
+            <div class="col align-end card-footer" style="margin-right: 0;">
+                <small>{{ current_date | date: 'dd/MMM/yyyy, h:mm a' }}</small>
+            </div>
         </div>
     </div>
 </div>

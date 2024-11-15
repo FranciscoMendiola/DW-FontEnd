@@ -33,6 +33,10 @@ export class ProductComponent {
 
   swal: SwalMessages = new SwalMessages(); // swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
@@ -47,25 +51,44 @@ export class ProductComponent {
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getProducts();
-    this.getActiveCategories();
+    if (localStorage.getItem("user")) {
 
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
 
-    // Product form
-    this.form = this.formBuilder.group({
-      product: ["", [Validators.required]],
-      gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
-      description: ["", [Validators.required]],
-      price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-      stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-      category_id: [0, [Validators.required]],
-    });
+      this.current_date = new Date();
+      this.getProducts();
+      if (this.products.length > 0) {
+        this.getActiveCategories();
+      }
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+
+      // Product form
+      this.form = this.formBuilder.group({
+        product: ["", [Validators.required]],
+        gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
+        description: ["", [Validators.required]],
+        price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        category_id: [0, [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -88,13 +111,17 @@ export class ProductComponent {
   }
 
   getProducts() {
+    this.loading = true;
     this.productService.getProducts().subscribe({
       next: (v) => {
         this.products = v.sort((a: { product_id: number; }, b: { product_id: number; }) => a.product_id - b.product_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
         this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar los productos"); // show message
+        this.loading = false;
       }
     });
   }

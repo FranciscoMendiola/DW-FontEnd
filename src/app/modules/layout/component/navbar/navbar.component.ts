@@ -79,7 +79,7 @@ export class NavbarComponent {
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        // this.swal.errorMessage("No fue posible recuperar las categorías"); // show message
       }
     });
   }
@@ -102,7 +102,7 @@ export class NavbarComponent {
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar la información del usuario actual"); // show message
       }
     })
   }

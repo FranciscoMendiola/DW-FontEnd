@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SharedModule } from '../../../../shared/shared-module';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -30,9 +31,14 @@ export class CategoryComponent {
 
   swal: SwalMessages = new SwalMessages(); // Swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private categoryService: CategoryService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
   currentPage: number = 1;
@@ -42,19 +48,36 @@ export class CategoryComponent {
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getCategories();
+    if (localStorage.getItem("user")) {
 
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
-    // Category form
-    this.form = this.formBuilder.group({
-      category: ["", [Validators.required]],
-      tag: ["", [Validators.required]],
-    });
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
+
+      this.current_date = new Date();
+      this.getCategories();
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+      // Category form
+      this.form = this.formBuilder.group({
+        category: ["", [Validators.required]],
+        tag: ["", [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -102,13 +125,16 @@ export class CategoryComponent {
   }
 
   getCategories() {
+    this.loading = true;
     this.categoryService.getCategories().subscribe({
       next: (v) => {
         this.categories = v.sort((a: { category_id: number; }, b: { category_id: number; }) => a.category_id - b.category_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar las categorías"); // show message
+        this.loading = false;
       }
     });
   }

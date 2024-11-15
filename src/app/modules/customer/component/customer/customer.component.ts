@@ -33,6 +33,10 @@ export class CustomerComponent {
 
   swal: SwalMessages = new SwalMessages(); // swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private customerService: CustomerService,
     private formBuilder: FormBuilder,
@@ -47,24 +51,43 @@ export class CustomerComponent {
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getCustomers();
-    this.getActiveRegions();
+    if (localStorage.getItem("user")) {
 
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
-    // Customer form
-    this.form = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
-      surname: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
-      rfc: ["", [Validators.required, Validators.pattern("^[ñA-Z]{3,4}[0-9]{6}[0-9A-Z]{3}$")]],
-      mail: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      region_id: ["", [Validators.required]],
-      address: ["", [Validators.required]],
-    });
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
+
+      this.current_date = new Date();
+      this.getCustomers();
+      if (this.customers.length > 0) {
+        this.getActiveRegions();
+      }
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+      // Customer form
+      this.form = this.formBuilder.group({
+        name: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
+        surname: ["", [Validators.required, Validators.pattern("^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ ]+$")]],
+        rfc: ["", [Validators.required, Validators.pattern("^[ñA-Z]{3,4}[0-9]{6}[0-9A-Z]{3}$")]],
+        mail: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+        region_id: ["", [Validators.required]],
+        address: ["", [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -87,13 +110,16 @@ export class CustomerComponent {
   }
 
   getCustomers() {
+    this.loading = true;
     this.customerService.getCustomers().subscribe({
       next: (v) => {
         this.customers = v.sort((a: { customer_id: number; }, b: { customer_id: number; }) => a.customer_id - b.customer_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar los clientes"); // show message
+        this.loading = false;
       }
     });
   }

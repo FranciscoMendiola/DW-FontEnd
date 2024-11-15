@@ -1,5 +1,5 @@
-
-.card-body, .card-image {
+.card-body,
+.card-image {
     background-color: aliceblue;
 }
 
@@ -39,21 +39,29 @@
 }
 
 .hover-text {
-    color: white;
+    color: rgb(255, 255, 255);
     display: none;
     font-size: 24px;
     left: 50%;
     pointer-events: none;
     position: absolute;
     text-align: center;
-    top: 41%; 
+    top: 41%;
     transform: translate(-50%, -50%);
     z-index: 10;
 }
 
 .text-center {
-    background-color: #04738c;
+    background-color: #000000;
     color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.text-center-message {
+    background-color: transparent !important;
+    color: rgb(0, 0, 0);
+    text-align: center;
     padding: 15px;
 }
 

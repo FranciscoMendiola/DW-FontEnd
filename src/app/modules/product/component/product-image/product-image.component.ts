@@ -52,6 +52,7 @@ export class ProductImageComponent {
   submitted = false; // Form submitted
 
   swal: SwalMessages = new SwalMessages(); // swal messages
+  loggedIn = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -81,8 +82,12 @@ export class ProductImageComponent {
     if (this.gtin) {
       this.getProduct();
       this.getActiveCategories();
-      if (!this.isAdmin) {
-        this.getCustomerDetail();
+
+      if (localStorage.getItem("token")) {
+        this.loggedIn = true;
+        if (!this.isAdmin) {
+          this.getCustomerDetail();
+        }
       }
     } else {
       this.swal.errorMessage("¡Producto Inexistente!");
