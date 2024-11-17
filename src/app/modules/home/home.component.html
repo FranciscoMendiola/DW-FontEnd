@@ -1,41 +1,83 @@
-<body>
-    <header class="py-5 bg-image-full mt-5" style="background-image: url('assets/images/home_images/main-image.png')">
-        <div class="text-center my-5">
-            <img class="img-fluid rounded-circle mb-4" src="assets/favicon.ico" alt="..." />
-            <h1 class="text-white fs-3 fw-bolder">Digital-Store</h1>
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
+            aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
+            aria-label="Slide 5"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5"
+            aria-label="Slide 6"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="assets/images/home/carousel/image1.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>First slide label</h5>
+                <p>Some representative placeholder content for the first slide.</p>
+            </div>
         </div>
-    </header>
+        <div class="carousel-item">
+            <img src="assets/images/home/carousel/image2.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Second slide label</h5>
+                <p>Some representative placeholder content for the second slide.</p>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-item">
+        <img src="assets/images/home/carousel/image3.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+        </div>
+    </div>
+    <div class="carousel-item">
+        <img src="assets/images/home/carousel/image4.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+            <h5>Four slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+        </div>
+    </div>
+</div>
 
-    <!-- Content section-->
 
-    <section class="py-5">
-        <div class="container my-5">
-         
-            <div class="row">
-                <div class="col">
-                    @for(category of categories;track category.category_id; let i = $index){
-                        <h3 class="bg-dark text-white">{{category.category}}</h3>
-                        <div class="container">
-                            @for(product of sections[i]; track product.product_id){
-                                <div class="card">
-                                    <img class="p-1" src="{{product.image}}">    
-                                    <div class="card-body">
-                                        <h4 class="card-title">{{product.product}}</h4>
-                                        <p class="card-text">{{product.price}}</p>
-                                    </div>
-                                </div>
-                            }
+
+
+
+
+<!-- Content section-->
+
+<section class="py-5">
+    <div class="container my-5">
+
+        <div class="row">
+            <div class="col">
+                @for(category of categories;track category.category_id; let i = $index){
+                <h3 class="bg-dark text-white">{{category.category}}</h3>
+                <div class="container">
+                    @for(product of sections[i]; track product.product_id){
+                    <div class="card">
+                        <img class="p-1" src="{{product.image}}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{product.product}}</h4>
+                            <p class="card-text">{{product.price}}</p>
                         </div>
+                    </div>
                     }
                 </div>
+                }
             </div>
-
         </div>
-    </section>
 
+    </div>
 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
-</body>
+</section>

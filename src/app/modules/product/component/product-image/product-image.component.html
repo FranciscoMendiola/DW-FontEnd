@@ -5,22 +5,22 @@
     <!-- Buttons -->
 
     @if (isAdmin) {
-        <div class="row">
-            <div class="col">
-                <label for="uploadImage" class="btn btn-dark">
-                    <i class="ph ph-plus-circle"></i>
-                    <input type="file" (change)="fileChangeHandler($event)" id="uploadImage" style="display:none">
-                    Agregar imagen
-                </label>
-            </div>
-    
-            <div class="col">
-                <button type="button" class="btn btn-dark" style="float: right" (click)="updateProduct()">
-                    <i class="ph ph-plus-circle"></i>
-                    Editar producto
-                </button>
-            </div>
+    <div class="row">
+        <div class="col">
+            <label for="uploadImage" class="btn btn-dark">
+                <i class="ph ph-plus-circle"></i>
+                <input type="file" (change)="fileChangeHandler($event)" id="uploadImage" style="display:none">
+                Agregar imagen
+            </label>
         </div>
+
+        <div class="col">
+            <button type="button" class="btn btn-dark" style="float: right" (click)="updateProduct()">
+                <i class="ph ph-plus-circle"></i>
+                Editar producto
+            </button>
+        </div>
+    </div>
     }
 </div>
 
@@ -34,10 +34,10 @@
         <div class="col-md-5">
             <div class="card card-image">
 
-                <!-- Carousel for one o more images -->
+                <!-- Carousel for one or more images -->
 
                 <div *ngIf="images.length > 0; else defaultImage" id="carouselExampleIndicators" class="carousel slide"
-                    data-bs-ride="false">
+                    data-bs-ride="carousel">
                     <div class="carousel-indicators" *ngIf="images.length > 1">
                         <button *ngFor="let item of images; let i = index" type="button" class="indicator"
                             data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i"
@@ -50,22 +50,22 @@
                             [class.active]="i === 0">
                             <div class="carousel-del">
                                 <a (click)="deleteProductImage(product.product_image_id)" class="trash"><i
-                                    class="fas fa-trash-alt cursor-pointer"></i></a>
+                                        class="fas fa-trash-alt cursor-pointer"></i></a>
                             </div>
-                            <img src="{{ product.image !== '' ? product.image : defaultImage}}"
-                                class="d-block w-100" alt="...">
+                            <img src="{{ product.image !== '' ? product.image : defaultImage}}" class="d-block w-100"
+                                alt="...">
                         </div>
                     </div>
 
                     <!-- Carousel controls, shown only if there are multiple images -->
 
-                    <button *ngIf="images.length > 1" class="carousel-control-prev" type="button" (click)="decrementImageIndex()"
+                    <button *ngIf="images.length > 1" class="carousel-control-prev" type="button"
                         data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
 
-                    <button *ngIf="images.length > 1" class="carousel-control-next" type="button" (click)="incrementImageIndex()"
+                    <button *ngIf="images.length > 1" class="carousel-control-next" type="button"
                         data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -75,10 +75,10 @@
                 <!-- Delete button visible only if there are images -->
 
                 @if (isAdmin) {
-                    <button *ngIf="images.length > 0" class="btn btn-dark" type="button"
-                        style="margin: 2%; align-items: center;" (click)="deleteActiveImage()">
-                        Eliminar imagen
-                    </button>
+                <button *ngIf="images.length > 0" class="btn btn-dark" type="button"
+                    style="margin: 2%; align-items: center;" (click)="deleteActiveImage()">
+                    Eliminar imagen
+                </button>
                 }
             </div>
         </div>
@@ -111,56 +111,58 @@
                                     <label class="label-description">{{ product.description }}</label>
                                 </td>
                             </tr>
-    
+
                             <tr>
                                 <td colspan="2">
-                                    <label class="label-price">{{ product.price | currency:'USD':'symbol':'1.2-2'}}</label>
+                                    <label class="label-price">{{ product.price |
+                                        currency:'USD':'symbol':'1.2-2'}}</label>
                                 </td>
                             </tr>
-    
+
                             @if (product.stock === 0) {
-                                <tr>
-                                    <td colspan="2">
-                                        <label class="label-stock color-red">Producto no disponible</label>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label class="label-stock color-red">Producto no disponible</label>
+                                </td>
+                            </tr>
                             } @else {
-                                <tr>
-                                    <td colspan="2">
-                                        @if (product.stock === 1) {
-                                            <label class="label-quantity">Cantidad ({{ product.stock }} disponible)</label>
-                                        } @else {
-                                            <label class="label-quantity">Cantidad ({{ product.stock }} disponibles)</label>
-                                        }
-    
-                                    </td>
-                                </tr>
-    
-                                <tr>
-                                    @if (!isAdmin && user.rol == "USER") {
-                                        <td class="quantity-btns">
-                                            <button class="btn quantity-btn minus" (click)="decreaseQuantity()">
-                                                <i class="ph ph-minus"></i>
-                                            </button>
-    
-                                            <input class="quantity-btn quantity-input" id="quantity-display" type="text" [(ngModel)]="quantity"/>
-    
-                                            <button class="btn quantity-btn plus" (click)="increaseQuantity()">
-                                                <i class="ph ph-plus"></i>
-                                            </button>
-                                        </td> 
-                                        
-                                        <td class="buy-container">
-                                            <button class="btn buy-btn" (click)="navigateToBuy()">
-                                                <i class="ph ph-credit-card"></i> Comprar ahora
-                                            </button>
-    
-                                            <button class="btn buy-btn" (click)="addToCart()">
-                                                <i class="ph ph-shopping-cart"></i> Agregar al carrito
-                                            </button>
-                                        </td>
+                            <tr>
+                                <td colspan="2">
+                                    @if (product.stock === 1) {
+                                    <label class="label-quantity">Cantidad ({{ product.stock }} disponible)</label>
+                                    } @else {
+                                    <label class="label-quantity">Cantidad ({{ product.stock }} disponibles)</label>
                                     }
-                                </tr>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                @if (!isAdmin && user.rol == "USER") {
+                                <td class="quantity-btns">
+                                    <button class="btn quantity-btn minus" (click)="decreaseQuantity()">
+                                        <i class="ph ph-minus"></i>
+                                    </button>
+
+                                    <input class="quantity-btn quantity-input" id="quantity-display" type="text"
+                                        [(ngModel)]="quantity" />
+
+                                    <button class="btn quantity-btn plus" (click)="increaseQuantity()">
+                                        <i class="ph ph-plus"></i>
+                                    </button>
+                                </td>
+
+                                <td class="buy-container">
+                                    <button class="btn buy-btn" (click)="navigateToBuy()">
+                                        <i class="ph ph-credit-card"></i> Comprar ahora
+                                    </button>
+
+                                    <button class="btn buy-btn" (click)="addToCart()">
+                                        <i class="ph ph-shopping-cart"></i> Agregar al carrito
+                                    </button>
+                                </td>
+                                }
+                            </tr>
                             }
                         </tbody>
                     </table>

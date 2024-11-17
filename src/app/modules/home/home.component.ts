@@ -10,46 +10,46 @@ import { Category } from '../product/_model/category';
   styleUrl: './home.component.css'
 })
 
-export class HomeComponent implements OnInit{ 
+export class HomeComponent implements OnInit {
 
   private categoryService = inject(CategoryService);
   private productService = inject(ProductService);
-  categories:Array<Category>=[];
-  sections:any=[];
-  limit:number=4;
+  categories: Array<Category> = [];
+  sections: any = [];
+  limit: number = 4;
 
-  swal=new SwalMessages;
+  swal = new SwalMessages;
 
   ngOnInit(): void {
     this.getCategories();
-    
+
   }
 
-  getCategories():void{
+  getCategories(): void {
     this.categoryService.getCategories().subscribe({
-      next:(v)=>this.categories=v,
-      error:(e)=>this.swal.errorMessage(e),
-      complete:()=>{
-        for(let i in this.categories){
+      next: (v) => this.categories = v,
+      error: (e) => this.swal.errorMessage(e),
+      complete: () => {
+        for (let i in this.categories) {
           this.sections.push([]);
-          this.getProductsByC(this.categories[i].category_id,Number(i));
+          this.getProductsByC(this.categories[i].category_id, Number(i));
 
         }
       }
     });
   }
 
-  getProductsByC(category_id:number,i:number):void{
+  getProductsByC(category_id: number, i: number): void {
     this.productService.getProductsByCategory(category_id).subscribe({
-      next:(v)=>this.sections[i]=v,
-      error:(e)=>this.swal.errorMessage(e),
-      complete:()=>{
-        if(this.sections[i].length>(this.limit-1))
+      next: (v) => this.sections[i] = v,
+      error: (e) => this.swal.errorMessage(e),
+      complete: () => {
+        if (this.sections[i].length > (this.limit - 1))
           this.sections[i].splice(this.limit, this.sections[i].length);
 
-        for(let product of this.sections[i]){
-          if(product.image=='data:image/png;base64,')
-            product.image='noimg.jpg'
+        for (let product of this.sections[i]) {
+          if (product.image == 'data:image/png;base64,')
+            product.image = 'noimg.jpg'
 
         }
       }

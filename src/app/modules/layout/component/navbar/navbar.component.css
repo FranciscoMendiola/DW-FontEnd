@@ -34,7 +34,7 @@
 
 .navbar {
     background-color: #000000 !important;
-    padding: 8px;
+    padding: 16px;
 }
 
 .navbar-brand {
@@ -48,7 +48,8 @@
 
 .navbar-content {
     margin: auto;
-    max-width: 1280px;
+    width: 1366px;
+    max-width: 1920px;
 }
 
 .nav-logo {
@@ -72,7 +73,7 @@
     margin-top: 9px;
 }
 
-.nav-link { 
+.nav-link {
     cursor: pointer;
 }
 

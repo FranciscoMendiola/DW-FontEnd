@@ -1,4 +1,7 @@
-td, th, .card-body-product, .card-image {
+td,
+th,
+.card-body-product,
+.card-image {
     background-color: #f0f8ff;
 }
 
@@ -8,7 +11,7 @@ td, th, .card-body-product, .card-image {
     margin-right: 30px;
 }
 
-.col{
+.col {
     margin-top: 30px;
 }
 
@@ -24,13 +27,37 @@ td, th, .card-body-product, .card-image {
     height: 68.5vh;
 }
 
-.carousel-control-prev, .carousel-control-next {
+.carousel-control-prev,
+.carousel-control-next {
     padding: 5%;
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: #757883 !important;
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: transparent !important;
+    /* Sin fondo */
+    background-image: none;
+    /* Elimina el ícono SVG predeterminado */
+    border: solid black;
+    /* Agrega contorno negro */
+    border-width: 0px 3px 3px 0px;
+    /* Configura el grosor */
+    display: inline-block;
+    padding: 15px;
+    /* Ajusta el tamaño */
 }
+
+.carousel-control-prev-icon {
+    transform: rotate(135deg);
+    /* Inversión para la flecha izquierda */
+}
+
+.carousel-control-next-icon {
+    transform: rotate(-45deg);
+    /* Posición para la flecha derecha */
+}
+
+
 
 .color-red {
     color: #CA2A4A;
@@ -54,7 +81,9 @@ td, th, .card-body-product, .card-image {
     width: 44vw;
 }
 
-.label-gtin, .label-product, .label-quantity {
+.label-gtin,
+.label-product,
+.label-quantity {
     color: #757883;
 }
 
@@ -80,7 +109,8 @@ td, th, .card-body-product, .card-image {
     padding: 0px 0px 0px 10px;
 }
 
-.ph-minus, .ph-plus {
+.ph-minus,
+.ph-plus {
     color: white;
 }
 
@@ -96,7 +126,8 @@ td, th, .card-body-product, .card-image {
     width: 100%;
 }
 
-.product-table thead, .product-table tbody {
+.product-table thead,
+.product-table tbody {
     display: block;
     width: 100%;
 }
