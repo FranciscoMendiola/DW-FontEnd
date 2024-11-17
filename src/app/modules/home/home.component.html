@@ -10,12 +10,26 @@
 
     <section class="py-5">
         <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h2>Pendiente</h2>
-
+         
+            <div class="row">
+                <div class="col">
+                    @for(category of categories;track category.category_id; let i = $index){
+                        <h3 class="bg-dark text-white">{{category.category}}</h3>
+                        <div class="container">
+                            @for(product of sections[i]; track product.product_id){
+                                <div class="card">
+                                    <img class="p-1" src="{{product.image}}">    
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{product.product}}</h4>
+                                        <p class="card-text">{{product.price}}</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
+
         </div>
     </section>
 
