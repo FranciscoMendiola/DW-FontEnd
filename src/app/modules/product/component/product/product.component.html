@@ -116,7 +116,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Nuevo Producto</h5>
+        <h5 class="modal-title">Editar Producto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -133,8 +133,8 @@
                 <label for="gtin">GTIN <span class="color-red">*</span> </label>
                 <input type="text" class="form-control" formControlName="gtin" id="gtin"
                   placeholder="Código GTIN del producto..." [ngClass]="{
-                    'is-invalid': form.controls['gtin'].errors && submitted
-                  }" />
+                                  'is-invalid': form.controls['gtin'].errors && submitted
+                              }" />
                 <div *ngIf="form.controls['gtin'].errors && submitted">
                   <small class="input-error-message">Por favor ingresa un GTIN válido</small>
                 </div>
@@ -149,10 +149,11 @@
                 </label>
                 <input type="text" class="form-control" formControlName="product" id="product"
                   placeholder="Nombre del producto..." [ngClass]="{
-                    'is-invalid': form.controls['product'].errors && submitted
-                  }" />
+                                  'is-invalid': form.controls['product'].errors && submitted
+                              }" />
                 <div *ngIf="form.controls['product'].errors && submitted">
-                  <small class="input-error-message">Por favor ingresa un nombre de producto válido</small>
+                  <small class="input-error-message">Por favor ingresa un nombre de producto
+                    válido</small>
                 </div>
               </div>
             </div>
@@ -165,8 +166,8 @@
                 </label>
                 <input type="text" class="form-control" formControlName="price" id="price"
                   placeholder="Precio del producto..." [ngClass]="{
-                    'is-invalid': form.controls['price'].errors && submitted
-                  }" />
+                                  'is-invalid': form.controls['price'].errors && submitted
+                              }" />
                 <div *ngIf="form.controls['price'].errors && submitted">
                   <small class="input-error-message">Por favor ingresa un precio válido</small>
                 </div>
@@ -181,36 +182,30 @@
                 </label>
                 <input type="text" class="form-control" formControlName="stock" id="stock"
                   placeholder="Número de stock del producto..." [ngClass]="{
-                    'is-invalid': form.controls['stock'].errors && submitted
-                  }" />
+                                  'is-invalid': form.controls['stock'].errors && submitted
+                              }" />
                 <div *ngIf="form.controls['stock'].errors && submitted">
-                  <small class="input-error-message">Por favor ingresa una cantidad de productos válida</small>
+                  <small class="input-error-message">Por favor ingresa una cantidad de productos
+                    válida</small>
                 </div>
               </div>
             </div>
 
-            <!-- Category_id -->
+            <!-- category_id  -->
 
             <div class="col-md-6">
               <div class="mb-3">
-                <label for="category_id">Categoría <span class="color-red">*</span>
-                </label>
-                <select class="form-select" formControlName="category_id" id="category_id" [ngClass]="{
-                    'is-invalid':
-                      form.controls['category_id'].errors && submitted
-                  }">
-                  <option [ngValue]="null" hidden>
-                    Selecciona una categoría...
-                  </option>
-                  <ng-container *ngFor="let category of categories">
-                    <option *ngIf="category.status == 1" [ngValue]="category.category_id">
-                      {{ category.category }}
-                    </option>
-                  </ng-container>
+                <label for="category_id">Categoría <span class="color-red">*</span> </label>
+                <select class="form-select" formControlName="category_id" id="category_id"
+                  [ngClass]="{'is-invalid': form.controls['category_id'].errors && submitted}">
+                  <option [ngValue]=null hidden>Selecciona una categoría...</option>
+                  @for(category of categories; track category) {
+                  <option [ngValue]="category.category_id">{{ category.category }}</option>
+                  }
                 </select>
-                <div *ngIf="form.controls['category_id'].errors && submitted">
-                  <small class="input-error-message">Por favor selecciona una categoría válida</small>
-                </div>
+                @if (form.controls['category_id'].errors && submitted) {
+                <small class="input-error-message">Favor de seleccionar válida</small>
+                }
               </div>
             </div>
 
@@ -221,9 +216,9 @@
               </label>
               <textarea rows="2" class="form-control" formControlName="description" id="description"
                 placeholder="Descripción del producto..." [ngClass]="{
-                  'is-invalid': form.controls['description'].errors && submitted
-                }">
-              </textarea>
+                              'is-invalid': form.controls['description'].errors && submitted
+                          }">
+                          </textarea>
               <div *ngIf="form.controls['description'].errors && submitted">
                 <small class="input-error-message">Por favor ingresa una descripción válida</small>
               </div>
@@ -235,7 +230,7 @@
           <div class="form-button">
 
             <button type="submit" class="btn btn-dark btn-new">
-              Guardar
+              Guardar cambios
             </button>
           </div>
         </form>

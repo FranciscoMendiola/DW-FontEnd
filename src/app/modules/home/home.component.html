@@ -28,56 +28,83 @@
                 <p>Some representative placeholder content for the second slide.</p>
             </div>
         </div>
-    </div>
-    <div class="carousel-item">
-        <img src="assets/images/home/carousel/image3.png" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-            <h5>Third slide label</h5>
-            <p>Some representative placeholder content for the third slide.</p>
+        <div class="carousel-item">
+            <img src="assets/images/home/carousel/image3.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Third slide label</h5>
+                <p>Some representative placeholder content for the third slide.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="assets/images/home/carousel/image4.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Four slide label</h5>
+                <p>Some representative placeholder content for the third slide.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="assets/images/home/carousel/image5.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Five slide label</h5>
+                <p>Some representative placeholder content for the third slide.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="assets/images/home/carousel/image6.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Six slide label</h5>
+                <p>Some representative placeholder content for the third slide.</p>
+            </div>
         </div>
     </div>
-    <div class="carousel-item">
-        <img src="assets/images/home/carousel/image4.png" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-            <h5>Four slide label</h5>
-            <p>Some representative placeholder content for the third slide.</p>
-        </div>
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
-
-
-
-
 
 
 <!-- Content section-->
 
 <section class="py-5">
-    <div class="container my-5">
-
-        <div class="row">
-            <div class="col">
-                @for(category of categories;track category.category_id; let i = $index){
-                <h3 class="bg-dark text-white">{{category.category}}</h3>
+    <div class="row">
+        <div class="col">
+            @for(category of categories;track category.category_id; let i = $index){
+            <h3 class="card-header text-white">
+                <a href="/products/{{category.category}}/{{category.category_id}}"
+                    class="text-white text-decoration-none">
+                    {{ category.category }}
+                </a>
+            </h3>
+            <div class="bg-container">
                 <div class="container">
+                    @if (sections[i].length > 0) {
+
                     @for(product of sections[i]; track product.product_id){
-                    <div class="card">
-                        <img class="p-1" src="{{product.image}}">
-                        <div class="card-body">
+
+                    <div class="card" (click)="navigateToView(product.gtin)">
+                        <img class="p-1 selector" src="{{product.image}}">
+                        <div class="card-body selector">
                             <h4 class="card-title">{{product.product}}</h4>
-                            <p class="card-text">{{product.price}}</p>
+                            <label class="label-price">{{ product.price |
+                                currency:'USD':'symbol':'1.2-2'}}</label>
+
                         </div>
                     </div>
                     }
+                    } @else {
+
+                    <div class="text-center-message table-empty">
+                        <h4>No hay productos disponibles en {{category.category}}</h4>
+                    </div>
+                    }
                 </div>
-                }
             </div>
+            }
         </div>
-
     </div>
-
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
 </section>

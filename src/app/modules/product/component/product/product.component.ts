@@ -177,6 +177,7 @@ export class ProductComponent {
   }
 
   showModalForm() {
+    this.getActiveCategories();
     $("#modalForm").modal("show");
     this.form.reset();
     this.submitted = false;

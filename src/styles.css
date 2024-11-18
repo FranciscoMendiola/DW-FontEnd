@@ -1,3 +1,6 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap");
+
 /* General  */
 
 .body-content {
@@ -33,7 +36,7 @@
 }
 
 .swal-cancel-button {
-  background-color: #d26464 !important;
+  background-color: rgb(210, 100, 100) !important;
 }
 
 .swal-confirm-button {
@@ -68,7 +71,7 @@
 }
 
 .disable-item {
-  color: #d26464 !important;
+  color: rgb(210, 100, 100) !important;
   font-weight: bold !important;
 }
 
@@ -104,7 +107,7 @@ pagination-controls {
 }
 
 .td-status-disable {
-  color: #D26464 !important;
+  color: rgb(210, 100, 100) !important;
 }
 
 .td-status-enable {
@@ -118,6 +121,20 @@ pagination-controls {
   border: none !important;
   color: rgb(0, 0, 0) !important;
   font-weight: lighter !important;
+}
+
+
+.btn-confirm {
+  margin: 1% !important;
+  align-items: center !important;
+  background-color: #009e28 !important;
+  color: white !important;
+  padding: 2% !important;
+}
+
+.btn-confirm:hover {
+  background-color: #007f20 !important;
+  /* verde más oscuro al pasar el cursor */
 }
 
 
@@ -3692,10 +3709,10 @@ fieldset:disabled .btn {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #04738C;
+  --bs-btn-bg: #2676b7;
   --bs-btn-border-color: #04738C;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #2c4cc4;
+  --bs-btn-hover-bg: #225e9b;
   --bs-btn-hover-border-color: #2a47b8;
   --bs-btn-focus-shadow-rgb: 82, 114, 234;
   --bs-btn-active-color: #fff;

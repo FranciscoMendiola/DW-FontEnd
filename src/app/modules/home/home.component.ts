@@ -3,9 +3,13 @@ import { CategoryService } from '../product/_service/category.service';
 import { ProductService } from '../product/_service/product.service';
 import { SwalMessages } from '../../shared/swal-messages';
 import { Category } from '../product/_model/category';
+import { SharedModule } from '../../shared/shared-module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [SharedModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -20,20 +24,20 @@ export class HomeComponent implements OnInit {
 
   swal = new SwalMessages;
 
+  constructor(private router: Router) { }
+
   ngOnInit(): void {
-    this.getCategories();
+    this.getActiveCategories();
 
   }
-
-  getCategories(): void {
-    this.categoryService.getCategories().subscribe({
+  getActiveCategories(): void {
+    this.categoryService.getActiveCategories().subscribe({
       next: (v) => this.categories = v,
       error: (e) => this.swal.errorMessage(e),
       complete: () => {
         for (let i in this.categories) {
           this.sections.push([]);
           this.getProductsByC(this.categories[i].category_id, Number(i));
-
         }
       }
     });
@@ -54,5 +58,13 @@ export class HomeComponent implements OnInit {
         }
       }
     });
+  }
+
+  navigateToView(gtin: string) {
+    if (gtin) {
+      this.router.navigate(['/product/', gtin]);
+    } else {
+      this.swal.errorMessage("¡No hay información del producto para mostrar!");
+    }
   }
 }

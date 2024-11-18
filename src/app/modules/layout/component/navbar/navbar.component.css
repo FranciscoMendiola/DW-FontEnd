@@ -68,6 +68,11 @@
     color: white !important;
 }
 
+.btn-with {
+    background-color: white;
+    color: black;
+}
+
 .nav-dropdown-menu-user {
     left: -150%;
     margin-top: 9px;

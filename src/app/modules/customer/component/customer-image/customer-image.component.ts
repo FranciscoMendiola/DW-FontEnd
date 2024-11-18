@@ -43,7 +43,7 @@ export class CustomerImageComponent {
     private route: ActivatedRoute,
     private customerService: CustomerService,
     private customerImageService: CustomerImageService,
-    private service: NgxPhotoEditorService,
+    private ngxService: NgxPhotoEditorService,
   ) { }
 
   ngOnInit() {
@@ -129,33 +129,43 @@ export class CustomerImageComponent {
     $("#modalForm").modal("show");
   }
 
-  uploadCustomerImage(image: string) {
-    let customerImage = new CustomerImage();
-    customerImage.image = image;
+  updateCustomerImage(image: string) {
+    // creamos el objeto customer image
+    let customerImage: CustomerImage = new CustomerImage();
     customerImage.customer_image_id = this.customer.image.customer_image_id;
+    customerImage.image = image;
 
+    // enviamos la imagen a la API
     this.customerImageService.updateCustomerImage(customerImage).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.message); // show message
+        this.swal.successMessage(v.message);
         this.getCustomer();
       },
       error: (e) => {
         console.error(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage(e.error.message);
       }
     });
   }
 
   fileChangeHandler($event: any) {
-    this.service.open($event, {
-      aspectRatio: 4 / 4,
+    console.log($event);
+    this.ngxService.open($event, {
+      aspectRatio: 1 / 1,
       autoCropArea: 1,
       resizeToWidth: 360,
       resizeToHeight: 360,
-    }).subscribe(data => {
-      this.uploadCustomerImage(data.base64!);
+    }).subscribe({
+      next: data => {
+        console.log('Base64 data:', data.base64);
+        this.updateCustomerImage(data.base64!);
+      },
+      error: err => {
+        console.error('Error en el editor:', err);
+      }
     });
   }
+
 
   redirect(url: string[]) {
     this.router.navigate(url);
@@ -207,7 +217,7 @@ export class CustomerImageComponent {
       cancelButtonText: 'Cancelar',
     }).then((result: any) => {
       if (result.isConfirmed) {
-        this.uploadCustomerImage('');
+        this.updateCustomerImage('');
         error: (e: { error: any; }) => {
           console.error(e);
           this.swal.errorMessage(e.error!.message);

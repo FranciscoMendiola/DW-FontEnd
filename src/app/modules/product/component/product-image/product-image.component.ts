@@ -333,6 +333,8 @@ export class ProductImageComponent {
     this.router.navigate(url);
   }
 
+
+
   showModalForm() {
     $("#modalForm").modal("show");
     this.form.reset();

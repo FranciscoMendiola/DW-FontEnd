@@ -24,8 +24,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-3 login_container">
-                        <button type="submit" class="btn btn-dark btn-new" [disabled]="loginForm.invalid || showLoading"
-                            name="button">
+                        <button type="submit" class="btn btn-dark btn-new" [disabled]="showLoading" name="button">
                             <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>
                             <span *ngIf="showLoading">Cargando...</span>
                             <span *ngIf="!showLoading">Iniciar sesión</span>
