@@ -2,7 +2,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Region } from '../_model/region/region';
+import { Region } from '../_model/region';
 import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 import { ApiResponse } from '../../../shared/api-response';
 
@@ -18,31 +18,31 @@ export class RegionService {
     private http: HttpClient
   ) { }
 
-  getRegions(): Observable<HttpResponse<Region[]>> {
-    return this.http.get<Region[]>(api_dwb_uri + this.source, { observe: 'response' });
+  getRegions(): Observable<any> {
+    return this.http.get<Region[]>(api_dwb_uri + this.source);
   }
 
-  createRegion(region: any): Observable<HttpResponse<ApiResponse>> {
-    return this.http.post<ApiResponse>(api_dwb_uri + this.source, region, { observe: 'response' });
+  createRegion(region: any): Observable<any> {
+    return this.http.post(api_dwb_uri + this.source, region);
   }
 
-  getRegion(region_id: number): Observable<HttpResponse<Region>> {
-    return this.http.get<Region>(api_dwb_uri + this.source + "/" + region_id, { observe: 'response' });
+  getRegion(region_id: number): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/" + region_id);
   }
 
-  updateRegion(region: any, region_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + region_id, region, { observe: 'response' });
+  updateRegion(region: any, region_id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + region_id, region);
   }
 
-  disableRegion(region_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source + "/" + region_id, { observe: 'response' });
+  disableRegion(region_id: number): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source + "/" + region_id);
   }
 
-  enableRegion(region_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.put<ApiResponse>(api_dwb_uri + this.source + "/" + region_id + "/activate", null, { observe: 'response' });
+  enableRegion(region_id: number): Observable<any> {
+    return this.http.put(api_dwb_uri + this.source + "/" + region_id + "/activate", null);
   }
 
-  getActiveRegions(): Observable<HttpResponse<Region[]>> {
-    return this.http.get<Region[]>(api_dwb_uri + this.source + "/active", { observe: 'response' });
+  getActiveRegions(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source + "/active");
   }
 }

@@ -20,7 +20,21 @@
 
     <div class="card-body">
 
+        <!-- loading  -->
+
+        @if(loading) {
+        <div class="text-center">
+            <img src="assets/loading.gif" class="img-loading" alt="">
+        </div>
+        }
+
         <!-- Region table -->
+
+        @if(!loading && regions.length == 0){
+        <div class="text-center table-empty">
+            <h4>No cuentas con regiones registradas</h4>
+        </div>
+        }@else {
 
         <table class="table">
             <thead class="thead-dark">
@@ -35,56 +49,61 @@
 
             <tbody>
                 @for(region of regions | paginate: pageConfig; track region; let i = $index) {
-                    <tr>
-                        <td class="tr-data">{{ i + 1 }}</td>
-                        <td class="tr-data">{{ region.region }}</td>
-                        <td class="tr-data">{{ region.tag }}</td>
-                        <td class="tr-data">
-                            <div class="td-status"
-                                [ngClass]="{'td-status-enable': region.status == 1, 'td-status-disable': region.status == 0}">
-                                {{ region.status == 0 ? "Inactivo" : "Activo" }}
+                <tr>
+                    <td class="tr-data">{{ region.region_id }}</td>
+                    <td class="tr-data">{{ region.region }}</td>
+                    <td class="tr-data">{{ region.tag }}</td>
+                    <td class="tr-data">
+                        <div class="tr-data"
+                            [ngClass]="{'td-status-enable': region.status == 1, 'td-status-disable': region.status == 0}">
+                            {{ region.status == 0 ? "Inactivo" : "Activo" }}
+                        </div>
+                    </td>
+                    <td class="tr-data">
+                        <div class="dropdown">
+
+                            <!-- Dots button -->
+
+                            <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+                            </button>
+
+                            <!-- Menu options -->
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" (click)="updateRegion(region)">
+                                    <i class="ph ph-note-pencil icon-text-ul"></i>Editar
+                                </a>
+
+                                <a *ngIf="region.status == 0" class="dropdown-item enable-item"
+                                    (click)="enableRegion(region.region_id)">
+                                    <i class="ph ph-check-circle icon-text-ul"></i>Activar
+                                </a>
+
+                                <a *ngIf="region.status == 1" class="dropdown-item disable-item"
+                                    (click)="disableRegion(region.region_id)">
+                                    <i class="ph ph-x-circle icon-text-ul"></i>Desactivar
+                                </a>
                             </div>
-                        </td>
-                        <td class="tr-data">
-                            <div class="dropdown">
-
-                                <!-- Dots button -->
-
-                                <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
-                                </button>
-
-                                <!-- Menu options -->
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" (click)="updateRegion(region)">
-                                        <i class="ph ph-note-pencil icon-text-ul"></i>Editar
-                                    </a>
-
-                                    <a *ngIf="region.status == 0" class="dropdown-item enable-item"
-                                        (click)="enableRegion(region.region_id)">
-                                        <i class="ph ph-check-circle icon-text-ul"></i>Activar
-                                    </a>
-
-                                    <a *ngIf="region.status == 1" class="dropdown-item disable-item"
-                                        (click)="disableRegion(region.region_id)">
-                                        <i class="ph ph-x-circle icon-text-ul"></i>Desactivar
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
+        }
 
         <!-- Pagination controls -->
 
-        <div class="pagination-container">
-            <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
+        <div class="row pagination-container">
+            <div class="col"></div>
+            <pagination-controls class="col align-center" previousLabel="Anterior" nextLabel="Siguiente"
                 (pageChange)="pageConfig.currentPage = $event">
             </pagination-controls>
+            <div class="col align-end card-footer" style="margin-right: 0;">
+                <small>{{ current_date | date: 'dd/MMM/yyyy, h:mm a' }}</small>
+            </div>
         </div>
     </div>
 </div>
@@ -116,7 +135,7 @@
                             [ngClass]="{'is-invalid': form.controls['region'].errors && submitted}">
 
                         @if (form.controls['region'].errors && submitted) {
-                            <small class="input-error-message">Por favor ingresa un nombre de región</small>
+                        <small class="input-error-message">Por favor ingresa un nombre de región</small>
                         }
                     </div>
 
@@ -126,11 +145,12 @@
                         <label for="tag" class="form-label">Código
                             <span class="color-red">*</span>
                         </label>
-                        <input type="text" class="form-control" formControlName="tag" placeholder="Código de la región..."
+                        <input type="text" class="form-control" formControlName="tag"
+                            placeholder="Código de la región..."
                             [ngClass]="{'is-invalid': form.controls['tag'].errors && submitted}">
 
                         @if (form.controls['tag'].errors && submitted) {
-                            <small class="input-error-message">Por favor ingresa un código de región</small>
+                        <small class="input-error-message">Por favor ingresa un código de región</small>
                         }
                     </div>
 

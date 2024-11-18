@@ -1,7 +1,8 @@
+import { Router } from '@angular/router';
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SharedModule } from '../../../../shared/shared-module';
 import { SwalMessages } from '../../../../shared/swal-messages';
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +12,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
@@ -30,31 +31,53 @@ export class CategoryComponent {
 
   swal: SwalMessages = new SwalMessages(); // Swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private categoryService: CategoryService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getCategories();
-    
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+    if (localStorage.getItem("user")) {
+
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
-    // Category form
-  this.form = this.formBuilder.group({
-    category: ["", [Validators.required]],
-    tag: ["", [Validators.required]],
-  });
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
+
+      this.current_date = new Date();
+      this.getCategories();
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+      // Category form
+      this.form = this.formBuilder.group({
+        category: ["", [Validators.required]],
+        tag: ["", [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -75,7 +98,7 @@ export class CategoryComponent {
     // add category to category list
     this.categoryService.createCategory(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCategories(); // reload categories
         this.hideModalForm(); // close modal
       },
@@ -90,7 +113,7 @@ export class CategoryComponent {
     // add category to category list
     this.categoryService.updateCategory(this.form.value, this.categoryToUpdate).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getCategories(); // reload categories
         this.hideModalForm(); // close modal
       },
@@ -102,24 +125,27 @@ export class CategoryComponent {
   }
 
   getCategories() {
+    this.loading = true;
     this.categoryService.getCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!
+        this.categories = v.sort((a: { category_id: number; }, b: { category_id: number; }) => a.category_id - b.category_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar las categorías"); // show message
+        this.loading = false;
       }
     });
   }
 
   updateCategory(category: Category) {
     this.categoryToUpdate = category.category_id;
-   
+
     this.form.reset();
     this.form.controls['category'].setValue(category.category);
     this.form.controls['tag'].setValue(category.tag);
-   
+
     this.submitted = false;
     $("#modalForm").modal("show");
   }
@@ -135,7 +161,7 @@ export class CategoryComponent {
       if (result.isConfirmed) {
         this.categoryService.disableCategory(category_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCategories(); // reload categories
           },
           error: (e) => {
@@ -158,7 +184,7 @@ export class CategoryComponent {
       if (result.isConfirmed) {
         this.categoryService.enableCategory(category_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getCategories(); // reload categories
           },
           error: (e) => {

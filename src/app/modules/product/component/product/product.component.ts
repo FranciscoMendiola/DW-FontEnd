@@ -1,4 +1,4 @@
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { DtoProductList } from '../../_dto/dto-product-list';
@@ -33,6 +33,10 @@ export class ProductComponent {
 
   swal: SwalMessages = new SwalMessages(); // swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
@@ -47,25 +51,44 @@ export class ProductComponent {
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getProducts();
-    this.getActiveCategories();
+    if (localStorage.getItem("user")) {
 
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
 
-    // Product form
-    this.form = this.formBuilder.group({
-      product: ["", [Validators.required]],
-      gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
-      description: ["", [Validators.required]],
-      price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-      stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
-      category_id: [0, [Validators.required]],
-    });
+      this.current_date = new Date();
+      this.getProducts();
+      if (this.products.length > 0) {
+        this.getActiveCategories();
+      }
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+
+      // Product form
+      this.form = this.formBuilder.group({
+        product: ["", [Validators.required]],
+        gtin: ["", [Validators.required, Validators.pattern('^[0-9]{13}$')]],
+        description: ["", [Validators.required]],
+        price: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        category_id: [0, [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -76,7 +99,7 @@ export class ProductComponent {
 
     this.productService.createProduct(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getProducts(); // reload products
         this.hideModalForm(); // close modal
       },
@@ -88,13 +111,17 @@ export class ProductComponent {
   }
 
   getProducts() {
+    this.loading = true;
     this.productService.getProducts().subscribe({
       next: (v) => {
-        this.products = v;
+        this.products = v.sort((a: { product_id: number; }, b: { product_id: number; }) => a.product_id - b.product_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
         this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar los productos"); // show message
+        this.loading = false;
       }
     });
   }
@@ -110,7 +137,7 @@ export class ProductComponent {
       if (result.isConfirmed) {
         this.productService.disableProduct(id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getProducts(); // reload products
           },
           error: (e) => {
@@ -133,7 +160,7 @@ export class ProductComponent {
       if (result.isConfirmed) {
         this.productService.enableProduct(id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getProducts(); // reload products
           },
           error: (e) => {
@@ -150,6 +177,7 @@ export class ProductComponent {
   }
 
   showModalForm() {
+    this.getActiveCategories();
     $("#modalForm").modal("show");
     this.form.reset();
     this.submitted = false;
@@ -164,7 +192,7 @@ export class ProductComponent {
   getActiveCategories() {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!;
+        this.categories = v;
       },
       error: (e) => {
         console.log(e);

@@ -19,27 +19,27 @@ export class CartService {
     private http: HttpClient
   ) { }
 
-  getCart(): Observable<HttpResponse<DtoCartDetails[]>> {
-    return this.http.get<DtoCartDetails[]>(api_dwb_uri + this.source, { observe: 'response' });
+  getCart(): Observable<any> {
+    return this.http.get(api_dwb_uri + this.source);
   }
 
-  addToCart(cart: any): Observable<HttpResponse<ApiResponse>> {
-    return this.http.post<ApiResponse>(api_dwb_uri + this.source, cart, { observe: 'response' });
+  addToCart(cart: any): Observable<any> {
+    return this.http.post(api_dwb_uri + this.source, cart);
   }
 
-  deleteCart(): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source, { observe: 'response' });
+  clearCart(): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source);
   }
 
-  removeFromCart(product_id: number): Observable<HttpResponse<ApiResponse>> {
-    return this.http.delete<ApiResponse>(api_dwb_uri + this.source + "/" + product_id, { observe: 'response' });
+  removeFromCart(product_id: number): Observable<any> {
+    return this.http.delete(api_dwb_uri + this.source + "/" + product_id);
   }
 
   getCartItemCount(): Observable<number> {
-    return this.http.get<DtoCartDetails[]>(api_dwb_uri + this.source, { observe: 'response' }).pipe(
+    return this.getCart().pipe(
       map(response => {
         if (response.body) {
-          return response.body.reduce((total, item) => total + item.quantity, 0);
+          return response.body.reduce((total: any, item: { quantity: any; }) => total + item.quantity, 0);
         }
         return 0;
       })

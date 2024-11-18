@@ -1,9 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../../_model/category/category';
+import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { Component } from '@angular/core';
 import { DtoProductList } from '../../_dto/dto-product-list';
-import { ProductImage } from '../../_model/product/product-image';
+import { ProductImage } from '../../_model/product-image';
 import { ProductImageService } from '../../_service/product-image.service';
 import { ProductService } from '../../_service/product.service';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -28,6 +28,8 @@ export class ProductByCategoryComponent {
   category: Category = new Category();
   category_id: any | number = 0;
 
+  loading = false; // loading request
+
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
@@ -40,11 +42,14 @@ export class ProductByCategoryComponent {
     this.route.paramMap.subscribe(params => {
       const category_id = Number(params.get('category_id'));
       if (category_id) {
+        this.loading = true;
         this.category_id = category_id;
         this.getProductsByCategory(category_id);
         this.getCategory(category_id);
+        this.loading = false;
       } else {
         this.swal.errorMessage("¡Categoría Inexistente!");
+        this.loading = false;
       }
     });
   }
@@ -54,7 +59,7 @@ export class ProductByCategoryComponent {
   getCategory(category_id: number) {
     this.categoryService.getCategory(category_id).subscribe({
       next: (v) => {
-        this.category = v.body!;
+        this.category = v;
       },
       error: (e) => {
         console.log(e);
@@ -66,10 +71,11 @@ export class ProductByCategoryComponent {
   // Products
 
   getProductsByCategory(category_id: number) {
+    this.loading = true;
     this.productService.getProductsByCategory(category_id).subscribe({
       next: (v) => {
         this.getCategory(this.category_id);
-        this.products = v.body!;
+        this.products = v;
         this.products.forEach(product => {
           this.getProductImages(product.product_id);
         });
@@ -84,7 +90,7 @@ export class ProductByCategoryComponent {
   getProductImages(product_id: number) {
     this.productImageService.getProductImages(product_id).subscribe({
       next: (v) => {
-        this.images[product_id] = v.body!;
+        this.images[product_id] = v;
       },
       error: (e) => {
         console.log(e);

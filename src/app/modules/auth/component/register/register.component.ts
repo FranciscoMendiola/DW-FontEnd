@@ -1,59 +1,77 @@
 import { Component } from '@angular/core';
-import { faBuilding, faEnvelope, faUser }  from '@fortawesome/free-solid-svg-icons';
-import { faGlobe, faKey, faLocationArrow, faUserPlus, faUserSecret } from '@fortawesome/free-solid-svg-icons';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { urlApiRegistroUsuario } from '../../_helper/urls';
-import { Usuario } from '../../_model/usuario';
-import { SharedModule } from '../../../../shared/shared-module';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../_service/authentication.service';
+import { Subscription } from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
+import { User } from '../../_model/user';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { CustomIconModule } from '../../../../shared/custom-icon-module';
 
 @Component({
   selector: 'app-register',
-  standalone:true,
-  imports:[SharedModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, CustomIconModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-
 export class RegisterComponent {
-  urlRegistro : string = urlApiRegistroUsuario;
-  usuario: Usuario = new Usuario();
-  userIcon = faUser;
-  surnameIcon = faUserPlus;
-  addressIcon = faLocationArrow;
-  mailIcon = faEnvelope;
-  usernameIcon = faUserSecret;
-  passwordIcon = faKey;
-  regionIcon = faGlobe;
-  rfcIcon = faBuilding;
 
-  constructor(private http : HttpClient, private router: Router) { }
+  registerForm = new FormGroup(
+    {
+      mail: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      rfc: new FormControl('', [Validators.required]),
+      surname: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required])
+    },
+  );
 
-  onSubmit() {
+  public showLoading: boolean;
+  private subscriptions: Subscription[] = [];
 
-    console.log(this.usuario);
-    
-    this.http.post(this.urlRegistro, this.usuario, {observe: 'body'}).subscribe(
-      (response) => {
-        console.log(JSON.stringify(response));   
-        Swal.fire({
-          title: 'Usuario registrado',
-          text: 'Usuario Registrado exitosamente',
-          icon: 'success',
-          showConfirmButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/login']);
-          }     
-        })
-      },
-      (error) => {
-        console.log('Error en llamada a la API de registro');
-      },
-      () => {
-        console.log('Bloque de codigo que se ejecuta siempre. Sin importar si se ejecuto con exito o con error');
-      }
-    )
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
+    this.showLoading = false;
   }
+
+  ngOnInit(): void {
+    // if (this.authenticationService.isUserLoggedIn()) {
+    //   this.router.navigateByUrl('/secured');
+    // }
+  }
+
+  public onRegister(): void {
+    var usuarioFormValue = this.registerForm.value as User;
+    var usuario: User = new User();
+
+    usuario.mail = usuarioFormValue.mail;
+    usuario.name = usuarioFormValue.name;
+    usuario.surname = usuarioFormValue.surname;
+    usuario.password = usuarioFormValue.password;
+    usuario.rfc = usuarioFormValue.rfc;
+    usuario.username = usuarioFormValue.username;
+
+    this.showLoading = true;
+    this.subscriptions.push(
+      this.authenticationService.register(usuario).subscribe(
+        (response: { message: string }) => {
+          this.showLoading = false;
+          alert(`${response.message}.`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.message);
+          this.showLoading = false;
+        }
+      )
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  get fg() {
+    return this.registerForm.controls;
+  }
+
 }

@@ -1,11 +1,11 @@
 import { CartService } from '../../_service/cart.service';
 import { Component } from '@angular/core';
-import { Customer } from '../../../customer/_model/customer/customer';
+import { Customer } from '../../../customer/_model/customer';
 import { CustomerService } from '../../../customer/_service/customer.service';
 import { DtoCartDetails } from '../../_dto/dto-cart-details';
 import { Router } from '@angular/router';
-import { Product } from '../../../product/_model/product/product';
-import { ProductImage } from '../../../product/_model/product/product-image';
+import { Product } from '../../../product/_model/product';
+import { ProductImage } from '../../../product/_model/product-image';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { PagingConfig } from '../../../../shared/paging-config';
 
@@ -44,7 +44,7 @@ export class CartComponent {
     private router: Router,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 3;
   totalItems: number = 0;
 
@@ -86,7 +86,7 @@ export class CartComponent {
     });
   }
 
-  deleteCart() {
+  clearCart() {
     if (this.cart.length != 0) {
       this.swal.confirmMessage.fire({
         title: '¿Deseas vaciar tu carrito?',
@@ -96,7 +96,7 @@ export class CartComponent {
         confirmButtonText: 'Confirmar',
       }).then((result: any) => {
         if (result.isConfirmed) {
-          this.cartService.deleteCart().subscribe({
+          this.cartService.clearCart().subscribe({
             next: (v) => {
               this.swal.successMessage(v.body!.message); // show message
               this.getCart(); // reload cart

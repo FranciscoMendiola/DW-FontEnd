@@ -1,13 +1,21 @@
-import { ProductImage } from "./product-image";
-
 export class Product {
-    product_id: number = 0;
-    product: string = "";
-    gtin: string = "";
-    description: string = "";
-    price: number = 0;
-    stock: number = 0;
-    category_id: number = 0;
-    category: string = "";
-    status: number = 0;
+    product_id: number;
+    product: string;
+    gtin: string;
+    description: string;
+    price: number;
+    stock: number;
+    category_id: number;
+    status: number;
+
+    constructor() {
+        this.product_id = 0;
+        this.product = '';
+        this.gtin = '';
+        this.description = '';
+        this.price = 0;
+        this.stock = 0;
+        this.category_id = 0;
+        this.status = 0;
+    }
 }

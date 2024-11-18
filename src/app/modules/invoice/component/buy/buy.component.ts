@@ -4,8 +4,8 @@ import { CustomerService } from '../../../customer/_service/customer.service';
 import { InvoiceService } from '../../_service/invoice.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Product } from '../../../product/_model/product/product';
-import { ProductImage } from '../../../product/_model/product/product-image';
+import { Product } from '../../../product/_model/product';
+import { ProductImage } from '../../../product/_model/product-image';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { ProductImageService } from '../../../product/_service/product-image.service';
 import { ProductService } from '../../../product/_service/product.service';
@@ -44,7 +44,7 @@ export class BuyComponent {
     private router: Router,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 3;
   totalItems: number = 0;
 

@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Region } from '../../_model/region/region';
+import { Region } from '../../_model/region';
 import { RegionService } from '../../_service/region.service';
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { SharedModule } from '../../../../shared/shared-module';
+import { Router } from '@angular/router';
 
 declare var $: any; // JQuery
 
 @Component({
   selector: 'app-region',
   standalone: true,
-  imports:[SharedModule],
+  imports: [SharedModule],
   templateUrl: './region.component.html',
   styleUrl: './region.component.css'
 })
@@ -26,36 +27,57 @@ export class RegionComponent {
 
   form: any;
 
-
   submitted = false; // Form submitted
 
   swal: SwalMessages = new SwalMessages(); // Swal messages
 
+  loading = false; // loading request
+  current_date = new Date(); // hora y fecha actual
+  isAdmin = false;
+
   constructor(
     private regionService: RegionService,
     private formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
 
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getRegions();
+    if (localStorage.getItem("user")) {
 
-    this.pageConfig = {
-      itemsPerPage: this.itemsPerPage,
-      currentPage: this.currentPage,
-      totalItems: this.totalItems
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
     }
 
-    // Region form
-  this.form = this.formBuilder.group({
-    region: ["", [Validators.required]],
-    tag: ["", [Validators.required]],
-  });
+    if (!this.isAdmin) {
+      this.router.navigate(['/home']);
+    } else {
+
+      this.current_date = new Date();
+      this.getRegions();
+
+      this.pageConfig = {
+        itemsPerPage: this.itemsPerPage,
+        currentPage: this.currentPage,
+        totalItems: this.totalItems
+      }
+
+      // Region form
+      this.form = this.formBuilder.group({
+        region: ["", [Validators.required]],
+        tag: ["", [Validators.required]],
+      });
+    }
   }
 
   onSubmit() {
@@ -77,7 +99,7 @@ export class RegionComponent {
     // add region to region list
     this.regionService.createRegion(this.form.value).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getRegions(); // reload regions
         this.hideModalForm(); // close modal
       },
@@ -92,7 +114,7 @@ export class RegionComponent {
     // add region to region list
     this.regionService.updateRegion(this.form.value, this.regionToUpdate).subscribe({
       next: (v) => {
-        this.swal.successMessage(v.body!.message); // show message
+        this.swal.successMessage(v.message); // show message
         this.getRegions(); // reload regions
         this.hideModalForm(); // close modal
         this.regionToUpdate = 0; // reset regionToUpdate
@@ -105,24 +127,27 @@ export class RegionComponent {
   }
 
   getRegions() {
+    this.loading = true;
     this.regionService.getRegions().subscribe({
       next: (v) => {
-        this.regions = v.body!;
+        this.regions = v.sort((a: { region_id: number; }, b: { region_id: number; }) => a.region_id - b.region_id);
+        this.loading = false;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar las regiones"); // show message
+        this.loading = false;
       }
     });
   }
 
   updateRegion(region: Region) {
     this.regionToUpdate = region.region_id;
-   
+
     this.form.reset();
     this.form.controls['region'].setValue(region.region);
     this.form.controls['tag'].setValue(region.tag);
-   
+
     this.submitted = false;
     $("#modalForm").modal("show");
   }
@@ -138,7 +163,7 @@ export class RegionComponent {
       if (result.isConfirmed) {
         this.regionService.disableRegion(region_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getRegions(); // reload regions
           },
           error: (e) => {
@@ -161,7 +186,7 @@ export class RegionComponent {
       if (result.isConfirmed) {
         this.regionService.enableRegion(region_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
+            this.swal.successMessage(v.message); // show message
             this.getRegions(); // reload regions
           },
           error: (e) => {

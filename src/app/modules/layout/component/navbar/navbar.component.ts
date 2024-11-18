@@ -1,9 +1,9 @@
 
-import { Category } from '../../../product/_model/category/category';
+import { Category } from '../../../product/_model/category';
 import { CategoryService } from '../../../product/_service/category.service';
 import { CartService } from '../../../invoice/_service/cart.service';
 import { Component } from '@angular/core';
-import { Customer } from '../../../customer/_model/customer/customer';
+import { Customer } from '../../../customer/_model/customer';
 import { CustomerService } from '../../../customer/_service/customer.service';
 import { Router } from '@angular/router';
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -17,12 +17,12 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [SharedModule,LoginComponent,RegisterComponent],
+  imports: [SharedModule, LoginComponent, RegisterComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 
-export class NavbarComponent { 
+export class NavbarComponent {
 
   categories: Category[] = []; // Category List
 
@@ -75,15 +75,15 @@ export class NavbarComponent {
   getCategories() {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
-        this.categories = v.body!;
+        this.categories = v;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        // this.swal.errorMessage("No fue posible recuperar las categorías"); // show message
       }
     });
   }
-  
+
   logout() {
     this.servicioAutenticacion.logOut();
     this.loggedIn = false;
@@ -96,12 +96,13 @@ export class NavbarComponent {
   getCustomerDetail() {
     this.customerService.getCustomerDetail().subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
+
         this.userProfileImage = this.customer.image?.image;
       },
       error: (e) => {
         console.log(e);
-        this.swal.errorMessage(e.error!.message); // show message
+        this.swal.errorMessage("No fue posible recuperar la información del usuario actual"); // show message
       }
     })
   }
@@ -109,7 +110,7 @@ export class NavbarComponent {
   showLoginModal() {
     $("#loginModal").modal("show");
   }
-  
+
   showRegisterModal() {
     $("#registerModal").modal("show");
   }

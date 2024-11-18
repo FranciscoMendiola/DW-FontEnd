@@ -1,30 +1,31 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from "@auth0/angular-jwt";
-import { LoginResponse } from '../_model/login-response';
 import { Observable } from 'rxjs';
-import { urlApiLoginUsuario } from '../_helper/urls';
-import { Usuario } from '../_model/usuario';
+import { api_dwb_uri } from '../../../shared/api-dwb-uri';
+import { User } from '../_model/user';
+import { LoginResponse } from '../_model/login-response';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthenticationService {
 
-  private token: string | null | undefined;
+  private token: string | null;
   private loggedInUsername: string | null;
-
-  private urlLogin = urlApiLoginUsuario;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.token = '';
     this.loggedInUsername = '';
   }
 
-  public login(user: Usuario): Observable<HttpResponse<LoginResponse>> {
-    return this.http.post<LoginResponse>(this.urlLogin , user, { observe: 'response' });
+  public login(credenciales: { username?: string, password?: string }): Observable<HttpResponse<LoginResponse>> {
+    return this.http.post<LoginResponse>(`${api_dwb_uri}/login`, credenciales, { observe: 'response' });
+  }
+
+  public register(user: User): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${api_dwb_uri}/user`, user);
   }
 
   public logOut(): void {
@@ -32,25 +33,23 @@ export class AuthenticationService {
     this.loggedInUsername = null;
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    localStorage.removeItem('users');
   }
 
-  public saveToken(token: string ): void {
+  public saveToken(token: string): void {
     this.token = token;
     localStorage.setItem('token', token);
   }
 
-  public addUserToLocalCache(user: LoginResponse): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  public addUserToLocalCache(loginResponse: LoginResponse): void {
+    localStorage.setItem('user', JSON.stringify(loginResponse));
   }
 
-  public getUserFromLocalCache(): Usuario | null {
-    
+  public getUserFromLocalCache(): User | null {
+
     let usuarioCache = localStorage.getItem('user');
     if (usuarioCache !== null) {
       return JSON.parse(usuarioCache);
     }
-    
     return null;
   }
 
@@ -58,7 +57,7 @@ export class AuthenticationService {
     this.token = localStorage.getItem('token');
   }
 
-  public getToken(): string | null | undefined {
+  public getToken(): string | null {
     return this.token;
   }
 
@@ -75,7 +74,6 @@ export class AuthenticationService {
       this.logOut();
       return false;
     }
-
     return false;
   }
 }

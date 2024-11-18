@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-import { Customer } from '../../_model/customer/customer';
+import { Customer } from '../../_model/customer';
 import { CustomerService } from '../../_service/customer.service';
 import { DtoInvoiceList } from '../../../invoice/_dto/dto-invoice-list';
 import { InvoiceService } from '../../../invoice/_service/invoice.service';
 import { ActivatedRoute } from '@angular/router';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { PagingConfig } from '../../../../shared/paging-config';
+import { SharedModule } from '../../../../shared/shared-module';
 
 @Component({
   selector: 'app-customer-buyings',
+  standalone: true,
+  imports: [SharedModule],
   templateUrl: './customer-buyings.component.html',
   styleUrl: './customer-buyings.component.css'
 })
@@ -32,7 +35,7 @@ export class CustomerBuyingsComponent {
     private invoiceService: InvoiceService,
   ) { }
 
-  currentPage: number  = 1;
+  currentPage: number = 1;
   itemsPerPage: number = 3;
   totalItems: number = 0;
 
