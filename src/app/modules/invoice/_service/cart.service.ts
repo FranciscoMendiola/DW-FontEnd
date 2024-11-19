@@ -2,8 +2,8 @@
 import { DtoCartDetails } from '../_dto/dto-cart-details';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 import { ApiResponse } from '../../../shared/api-response';
 
@@ -33,16 +33,5 @@ export class CartService {
 
   removeFromCart(product_id: number): Observable<any> {
     return this.http.delete(api_dwb_uri + this.source + "/" + product_id);
-  }
-
-  getCartItemCount(): Observable<number> {
-    return this.getCart().pipe(
-      map(response => {
-        if (response.body) {
-          return response.body.reduce((total: any, item: { quantity: any; }) => total + item.quantity, 0);
-        }
-        return 0;
-      })
-    );
   }
 }

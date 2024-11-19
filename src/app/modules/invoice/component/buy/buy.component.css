@@ -8,20 +8,20 @@ table {
     text-align: center;
 }
 
-td, .card-body, .card-cart-total {
+td,
+.card-body,
+.card-cart-total {
     background-color: aliceblue;
 }
 
-th {
-    width: 100%;
-}
-
 .card-header {
-    background-color: #013A55;
+    background-color: #000000;
     color: white;
     padding: 20px;
     padding-top: 30px;
 }
+
+
 
 .d-block {
     height: 60px;
@@ -44,4 +44,8 @@ th {
 .span-quantities {
     float: left;
     font-size: large;
+}
+
+.btn-block {
+    margin: 0 5px;
 }

@@ -18,7 +18,7 @@ export class ProductImageService {
     private http: HttpClient
   ) { }
 
-  uploadProductImage(product_image: ProductImage): Observable<any> {
+  updateProductImage(product_image: ProductImage): Observable<any> {
     return this.http.post(api_dwb_uri + this.source, product_image);
   }
 

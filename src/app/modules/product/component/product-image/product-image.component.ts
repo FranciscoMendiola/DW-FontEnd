@@ -13,6 +13,7 @@ import { ProductImageService } from '../../_service/product-image.service';
 import { ProductService } from '../../_service/product.service';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { SharedModule } from '../../../../shared/shared-module';
+import { DtoCartDetails } from '../../../invoice/_dto/dto-cart-details';
 
 declare var $: any; // JQuery
 
@@ -28,6 +29,8 @@ export class ProductImageComponent {
 
   isAdmin = false;
   user: any;
+
+  cart: DtoCartDetails[] = [];
 
   product: Product = new Product(); // product
   gtin: any | string = "";
@@ -63,7 +66,7 @@ export class ProductImageComponent {
     private productImageService: ProductImageService,
     private customerService: CustomerService,
     private cartService: CartService,
-    private service: NgxPhotoEditorService,
+    private service: NgxPhotoEditorService
   ) { }
 
   ngOnInit() {
@@ -82,6 +85,7 @@ export class ProductImageComponent {
     if (this.gtin) {
       this.getProduct();
       this.getActiveCategories();
+      this.getCart();
 
       if (localStorage.getItem("token")) {
         this.loggedIn = true;
@@ -169,12 +173,12 @@ export class ProductImageComponent {
     });
   }
 
-  uploadProductImage(image: string) {
+  updateProductImage(image: string) {
     let productImage = new ProductImage();
     productImage.image = image;
     productImage.product_id = this.product.product_id;
 
-    this.productImageService.uploadProductImage(productImage).subscribe({
+    this.productImageService.updateProductImage(productImage).subscribe({
       next: (v) => {
         this.swal.successMessage(v.message); // show message
         this.getProductImages(this.product.product_id); // reload products
@@ -253,7 +257,9 @@ export class ProductImageComponent {
   }
 
   addToCart() {
-    if (!isNaN(this.quantity) && this.quantity >= 1) {
+    if (this.product.stock >= (this.quantity + this.cartItemCount) && (this.quantity + this.cartItemCount) >= 1) {
+
+
       if (this.gtin) {
         const newItem = {
           rfc: this.rfc,
@@ -283,17 +289,44 @@ export class ProductImageComponent {
     }
   }
 
+  navigateToBuy() {
+    if (this.product.stock >= (this.quantity + this.cartItemCount) && (this.quantity + this.cartItemCount) >= 1) {
+      this.addToCart();
+      this.router.navigate(['/cart']);
+
+    } else {
+      this.swal.errorMessage('¡Cantidad inválida!');
+    }
+  }
+
   getCartItemCount() {
-    this.cartService.getCartItemCount().subscribe(count => {
-      this.cartItemCount = count;
+    this.cart.forEach(e => {
+      if (e.product.gtin === this.gtin) {
+        this.cartItemCount = e.quantity;
+        console.log(e.quantity);
+        return;
+      }
     });
   }
+
+  getCart() {
+    this.cartService.getCart().subscribe({
+      next: (v) => {
+        this.cart = v;
+        this.getCartItemCount();
+      },
+      error: (e) => {
+      }
+    });
+  }
+
+
 
   addToProductData() {
     if (this.gtin && this.quantity) {
       const product = {
         gtin: this.product.gtin,
-        product: this.product.product,
+        product: this.product,
         price: this.product.price,
         quantity: this.quantity,
         image: this.images[0].image
@@ -304,19 +337,6 @@ export class ProductImageComponent {
     }
   }
 
-  navigateToBuy() {
-    this.addToProductData();
-
-    if (this.productData.length > 0 && this.rfc) {
-      const customerData = {
-        rfc: this.rfc
-      };
-
-      this.router.navigate(['/product/' + this.gtin + '/buy'], { state: { products: this.productData, customer: customerData } });
-    } else {
-      console.error('No hay productos seleccionados o los datos del cliente son nulos o no válidos');
-    }
-  }
 
   fileChangeHandler($event: any) {
     this.service.open($event, {
@@ -325,7 +345,7 @@ export class ProductImageComponent {
       resizeToWidth: 360,
       resizeToHeight: 360,
     }).subscribe(data => {
-      this.uploadProductImage(data.base64!);
+      this.updateProductImage(data.base64!);
     });
   }
 

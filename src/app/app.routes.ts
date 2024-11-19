@@ -13,6 +13,8 @@ import { RegionComponent } from './modules/customer/component/region/region.comp
 import { InvoiceComponent } from './modules/invoice/component/invoice/invoice.component';
 import { CustomerImageComponent } from './modules/customer/component/customer-image/customer-image.component';
 import { ProductByCategoryComponent } from './modules/product/component/product-by-category/product-by-category.component';
+import { CartComponent } from './modules/invoice/component/cart/cart.component';
+import { BuyComponent } from './modules/invoice/component/buy/buy.component';
 
 export const routes: Routes = [
     {
@@ -77,5 +79,19 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+
+    {
+        path: 'cart',
+        component: CartComponent
+    },
+    {
+        path: 'cart/:buy',
+        component: BuyComponent
+    },
+
+    {
+        path: 'product/:gtin/buy',
+        component: BuyComponent
     },
 ];

@@ -2,18 +2,25 @@ table {
     text-align: center;
 }
 
-td, .card-body, .card-cart-total {
+td,
+.card-body,
+.card-cart-total {
     background-color: aliceblue;
 }
 
 .btn-delete-product {
     background-color: #d26464 !important;
     color: white;
-    padding: 8px 10px 8px 10px;
+    padding: 8px 25px;
 }
 
-.card-header, .card-title {
-    background-color: #013A55;
+.btn-success {
+    padding: 8px 25px;
+}
+
+.card-header,
+.card-title {
+    background-color: #000000;
     color: white;
     padding: 20px;
     padding-top: 30px;
@@ -38,4 +45,78 @@ td, .card-body, .card-cart-total {
     font-size: 50px;
     font-style: oblique;
     font-weight: bold;
+}
+
+.quantity-btn {
+    background-color: #013a56;
+    border-color: none;
+}
+
+.quantity-btn:hover,
+.quantity-btn:focus,
+.quantity-btn:active {
+    background-color: #013a56 !important;
+    border-color: none;
+    color: white !important;
+}
+
+.quantity-btn.minus {
+    border-radius: 5px 0px 0px 5px;
+}
+
+.quantity-btn.plus {
+    border-radius: 0px 5px 5px 0px;
+}
+
+.quantity-btns {
+    width: 200px;
+    height: 50px;
+    margin-left: 60px;
+}
+
+.quantity-input {
+    background-color: #013a56;
+    border-color: transparent transparent white transparent;
+    border-width: 3px;
+    color: white;
+    font-weight: 600;
+    height: 38px;
+    text-align: center;
+    width: 30px;
+}
+
+.label-quantity {
+    font-size: medium;
+}
+
+.ph-minus,
+.ph-plus {
+    color: white;
+}
+
+.text-center-message {
+    background-color: transparent !important;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 15px;
+}
+
+.text-center h3 {
+    font-size: x-large;
+}
+
+
+
+.selector:hover {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    filter: brightness(90%);
+}
+
+.selector .unselect:hover {
+    cursor: default !important;
+    /* Cambia el cursor si es necesario */
+    filter: brightness(100%);
+    /* Usa !important si otras reglas sobrescriben */
 }

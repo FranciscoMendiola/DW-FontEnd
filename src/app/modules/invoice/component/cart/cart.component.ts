@@ -8,9 +8,13 @@ import { Product } from '../../../product/_model/product';
 import { ProductImage } from '../../../product/_model/product-image';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { PagingConfig } from '../../../../shared/paging-config';
+import { SharedModule } from '../../../../shared/shared-module';
+import { reduce } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
+  imports: [SharedModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -64,7 +68,7 @@ export class CartComponent {
   getCart() {
     this.cartService.getCart().subscribe({
       next: (v) => {
-        this.cart = v.body!;
+        this.cart = v;
         this.getCartItemCount();
         this.calculateCartTotal();
 
@@ -98,9 +102,7 @@ export class CartComponent {
         if (result.isConfirmed) {
           this.cartService.clearCart().subscribe({
             next: (v) => {
-              this.swal.successMessage(v.body!.message); // show message
-              this.getCart(); // reload cart
-              this.getCartItemCount();
+              this.swal.successMessage(v.message); // show message
             },
             error: (e) => {
               console.error(e);
@@ -123,10 +125,8 @@ export class CartComponent {
       if (result.isConfirmed) {
         this.cartService.removeFromCart(product_id).subscribe({
           next: (v) => {
-            this.swal.successMessage(v.body!.message); // show message
-            this.getCart(); // reload cart
-            this.getCartItemCount();
-            this.calculateCartTotal();
+            this.swal.successMessage(v.message); // show message
+            this.ngOnInit();
             setTimeout(() => {
               window.location.reload();
             }, 4000);
@@ -141,8 +141,9 @@ export class CartComponent {
   }
 
   getCartItemCount() {
-    this.cartService.getCartItemCount().subscribe(count => {
-      this.cartItemCount = count;
+    this.cartItemCount = 0;
+    this.cart.forEach(e => {
+      this.cartItemCount += e.quantity;
     });
   }
 
@@ -154,7 +155,7 @@ export class CartComponent {
 
   navigateToBuy() {
     if (this.productData.length > 0 && this.customerData && this.customerData.rfc) {
-      this.router.navigate(['/cart/buy'], { state: { products: [...this.productData], customer: this.customerData } });
+      this.router.navigate(['/cart/buy'], { state: { products: [...this.cart], customer: this.customerData } });
       this.productData = [];
     } else {
       console.error('No hay productos seleccionados o los datos del cliente son nulos o no válidos');
@@ -166,7 +167,7 @@ export class CartComponent {
   getCustomerDetail() {
     this.customerService.getCustomerDetail().subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
         this.rfc = this.customer.rfc;
 
         this.customerData = {
@@ -178,5 +179,53 @@ export class CartComponent {
         this.swal.errorMessage(e.error!.message); // show message
       }
     })
+  }
+
+  increaseProduct(e: DtoCartDetails): void {
+    this.addToCart(e, 1);
+  }
+
+  decreaseProduct(e: DtoCartDetails): void {
+    this.addToCart(e, -1);
+  }
+
+  addToCart(e: DtoCartDetails, cantidad: number) {
+
+
+    const nuevaCantidad = e.quantity + cantidad;
+
+    if (nuevaCantidad === 0) {
+      this.removeFromCart(e.cart_id);
+      return;
+    }
+
+    // Verifica los límites antes de enviar la solicitud
+    if (e.product.stock >= nuevaCantidad && nuevaCantidad >= 0) {
+      const newItem = {
+        rfc: e.rfc,
+        gtin: e.product.gtin,
+        quantity: cantidad,
+      };
+
+      this.cartService.addToCart(newItem).subscribe({
+        next: (v) => {
+          this.swal.successMessage(v.message);
+          this.getCart();
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
+        },
+        error: (e) => {
+          console.error(e);
+          this.swal.errorMessage(e.error!.message);
+        }
+      });
+    } else {
+      this.swal.errorMessage('¡Cantidad inválida!');
+    }
+  }
+
+  redirect(url: string[]) {
+    this.router.navigate(url);
   }
 }

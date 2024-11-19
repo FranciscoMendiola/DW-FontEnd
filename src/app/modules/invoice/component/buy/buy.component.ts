@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Customer } from '../../../customer/_model/customer/customer';
 import { CustomerService } from '../../../customer/_service/customer.service';
 import { InvoiceService } from '../../_service/invoice.service';
 import { Router } from '@angular/router';
@@ -10,9 +9,14 @@ import { SwalMessages } from '../../../../shared/swal-messages';
 import { ProductImageService } from '../../../product/_service/product-image.service';
 import { ProductService } from '../../../product/_service/product.service';
 import { PagingConfig } from '../../../../shared/paging-config';
+import { SharedModule } from '../../../../shared/shared-module';
+import { Customer } from '../../../customer/_model/customer';
+import { DtoCartDetails } from '../../_dto/dto-cart-details';
 
 @Component({
   selector: 'app-buy',
+  standalone: true,
+  imports: [SharedModule],
   templateUrl: './buy.component.html',
   styleUrl: './buy.component.css'
 })
@@ -22,7 +26,7 @@ export class BuyComponent {
   customer: Customer = new Customer(); // customer
   rfc: any | number = 0;
 
-  products: any[] = [];
+  products: DtoCartDetails[] = [];
   product: Product = new Product(); // product
   gtin: any | string = "";
 
@@ -84,10 +88,14 @@ export class BuyComponent {
       confirmButtonText: 'Confirmar',
     }).then((result: any) => {
       if (result.isConfirmed) {
+        if (this.customer.address === '') {
+          this.swal.errorMessage("La dirección de envió esta vacía");
+          return;
+        }
         Swal.fire({
-          imageUrl: 'assets/images/loading.gif',
+          imageUrl: 'assets/loading.gif',
           imageWidth: 350,
-          imageHeight: 200,
+          imageHeight: 300,
           imageAlt: 'loading icon',
           background: '#ecf0ef',
           color: '#013a55',
@@ -108,7 +116,7 @@ export class BuyComponent {
 
   calculateTotal() {
     this.products.forEach(product => {
-      this.total += product.quantity * product.price;
+      this.total += product.quantity * product.product.price;
     });
 
     this.iva = this.total * 0.16;
@@ -134,7 +142,7 @@ export class BuyComponent {
   getProduct() {
     this.productService.getProduct(this.gtin).subscribe({
       next: (v) => {
-        this.product = v.body!;
+        this.product = v;
         this.getProductImages(this.product.product_id);
       },
       error: (e) => {
@@ -147,7 +155,7 @@ export class BuyComponent {
   getProductImages(product_id: number) {
     this.productImageService.getProductImages(product_id).subscribe({
       next: (v) => {
-        this.images = v.body!;
+        this.images = v;
       },
       error: (e) => {
         console.log(e);
@@ -161,12 +169,16 @@ export class BuyComponent {
   getCustomer() {
     this.customerService.getCustomer(this.rfc).subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
       },
       error: (e) => {
         console.log(e);
         this.swal.errorMessage(e.error!.message); // show message
       }
     });
+  }
+
+  redirect(url: string[]) {
+    this.router.navigate(url);
   }
 }
