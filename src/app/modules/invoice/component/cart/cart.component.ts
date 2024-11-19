@@ -41,6 +41,8 @@ export class CartComponent {
 
   productData: any[] = [];
   customerData: any = {};
+  isAdmin: boolean = false;
+  loggedIn: boolean = false;
 
   constructor(
     private cartService: CartService,
@@ -49,14 +51,34 @@ export class CartComponent {
   ) { }
 
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 5;
   totalItems: number = 0;
 
   pageConfig: PagingConfig = {} as PagingConfig;
 
   ngOnInit() {
-    this.getCart();
-    this.getCustomerDetail();
+    if (localStorage.getItem("user")) {
+
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    }
+
+    if (localStorage.getItem("token")) {
+      this.loggedIn = true;
+      if (this.isAdmin) {
+        this.swal.errorMessage("Los administradores no pueden realizar compras");
+      } else {
+        this.getCart();
+        this.getCustomerDetail();
+      }
+    } else {
+      this.swal.errorMessage("Se requiere iniciar sesión para realizar compras");
+    }
 
     this.pageConfig = {
       itemsPerPage: this.itemsPerPage,

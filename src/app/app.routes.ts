@@ -15,83 +15,23 @@ import { CustomerImageComponent } from './modules/customer/component/customer-im
 import { ProductByCategoryComponent } from './modules/product/component/product-by-category/product-by-category.component';
 import { CartComponent } from './modules/invoice/component/cart/cart.component';
 import { BuyComponent } from './modules/invoice/component/buy/buy.component';
+import { CustomerBuyingsComponent } from './modules/customer/component/customer-buyings/customer-buyings.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-    },
-
-    {
-        path: 'home',
-        component: HomeComponent
-    },
-    {
-        path: 'category',
-        component: CategoryComponent
-    },
-    {
-        path: 'product',
-        component: ProductComponent
-    },
-    {
-        path: 'product/:gtin',
-        component: ProductImageComponent
-    },
-    {
-        path: 'register',
-        component: RegisterComponent
-    },
-    {
-        path: 'secured',
-        component: SecuredComponent,
-        canActivate: [authenticationGuard]
-    },
-
-    {
-        path: 'invoice',
-        component: InvoiceComponent,
-    },
-    {
-        path: 'customer',
-        component: CustomerComponent
-    },
-
-    {
-        path: 'customer/:rfc',
-        component: CustomerImageComponent
-    },
-
-
-    {
-        path: 'products/:category/:category_id',
-        component: ProductByCategoryComponent
-    },
-
-
-
-    {
-        path: 'region',
-        component: RegionComponent
-    },
-
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-
-    {
-        path: 'cart',
-        component: CartComponent
-    },
-    {
-        path: 'cart/:buy',
-        component: BuyComponent
-    },
-
-    {
-        path: 'product/:gtin/buy',
-        component: BuyComponent
-    },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },
+    { path: 'category', component: CategoryComponent },
+    { path: 'product', component: ProductComponent },
+    { path: 'product/:gtin', component: ProductImageComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'secured', component: SecuredComponent, canActivate: [authenticationGuard] },
+    { path: 'invoice', component: InvoiceComponent },
+    { path: 'customer', component: CustomerComponent },
+    { path: 'customer/:rfc', component: CustomerImageComponent },
+    { path: 'products/:category/:category_id', component: ProductByCategoryComponent },
+    { path: 'region', component: RegionComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'cart', component: CartComponent },
+    { path: 'cart/:buy', component: BuyComponent },
+    { path: 'customer/:rfc/buyings', component: CustomerBuyingsComponent }
 ];

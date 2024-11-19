@@ -40,6 +40,9 @@ export class BuyComponent {
 
   swal: SwalMessages = new SwalMessages(); // Swal messages
 
+  // Obtener la fecha actual
+  currentDate = new Date();
+
   constructor(
     private productService: ProductService,
     private productImageService: ProductImageService,
@@ -49,14 +52,36 @@ export class BuyComponent {
   ) { }
 
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 5;
   totalItems: number = 0;
 
   pageConfig: PagingConfig = {} as PagingConfig;
 
+  estimatedDeliveryDate: string | undefined;
+
+
+  isAdmin: boolean = false;
+  loggedIn: boolean = false;
+
   ngOnInit() {
+    if (localStorage.getItem("user")) {
+
+      let user = JSON.parse(localStorage.getItem("user")!);
+
+      if (user.rol == "ADMIN") {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    }
+
+    if (localStorage.getItem("token")) {
+      this.loggedIn = true;
+    }
+
+
     const navigationState = history.state;
-    if (navigationState && navigationState.products && navigationState.customer) {
+    if (navigationState && navigationState.products && navigationState.customer && !this.isAdmin && this.loggedIn) {
       this.products = navigationState.products;
       this.rfc = navigationState.customer.rfc;
       this.getCustomer();
@@ -67,9 +92,22 @@ export class BuyComponent {
       });
 
       this.calculateTotal();
+
+      // Sumar 7 días
+      this.currentDate.setDate(this.currentDate.getDate() + 7);
+
+      // Formatear la fecha
+      this.estimatedDeliveryDate = this.currentDate.toLocaleDateString('es-MX', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
+
     } else {
       console.error('Los datos del producto y/o cliente no están disponibles');
       this.swal.errorMessage('¡Los datos son inválidos para realizar la compra!');
+      this.redirect(['/cart']);
     }
 
     this.pageConfig = {
