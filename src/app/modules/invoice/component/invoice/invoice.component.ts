@@ -5,6 +5,8 @@ import { SwalMessages } from '../../../../shared/swal-messages';
 import { PagingConfig } from '../../../../shared/paging-config';
 import { SharedModule } from '../../../../shared/shared-module';
 import { Router } from '@angular/router';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+
 declare var $: any; // JQuery
 
 @Component({
@@ -25,11 +27,13 @@ export class InvoiceComponent {
   loading = false; // loading request
   current_date = new Date(); // hora y fecha actual
   isAdmin = false;
+  faEllipsisV=faEllipsisV;
 
   constructor(
     private invoiceService: InvoiceService,
     private router: Router
   ) { }
+
 
   currentPage: number = 1;
   itemsPerPage: number = 5;
@@ -63,6 +67,7 @@ export class InvoiceComponent {
       }
     }
   }
+  
 
   getInvoices() {
     this.loading = true;
@@ -78,4 +83,5 @@ export class InvoiceComponent {
       }
     });
   }
+  
 }
