@@ -66,10 +66,7 @@ export class NavbarComponent {
     }
 
     this.getCategories();
-
-    this.cartService.getCartItemCount().subscribe(count => {
-      this.cartItemCount = count;
-    });
+    this.getCartItemCount();
   }
 
   getCategories() {
@@ -113,5 +110,12 @@ export class NavbarComponent {
 
   showRegisterModal() {
     $("#registerModal").modal("show");
+  }
+
+
+  getCartItemCount() {
+    this.cartService.getItemCount().subscribe(count => {
+      this.cartItemCount = count;
+    });
   }
 }

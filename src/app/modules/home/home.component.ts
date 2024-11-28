@@ -33,7 +33,8 @@ export class HomeComponent implements OnInit {
   getActiveCategories(): void {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => this.categories = v,
-      error: (e) => this.swal.errorMessage(e),
+      error: (e) =>
+        this.swal.errorMessage("No fue posible recuperar la información de la api"),
       complete: () => {
         for (let i in this.categories) {
           this.sections.push([]);

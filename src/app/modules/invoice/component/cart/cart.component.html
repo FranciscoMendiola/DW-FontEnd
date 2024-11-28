@@ -1,14 +1,3 @@
-@if (cart.length === 0) {
-<div class="container">
-    <div class="row justify-content-center align-items-center">
-        <div class="text-empty-cart text-center">Aún no tienes productos en tu carrito</div>
-
-        <div class="card cart-image">
-            <img src="assets/images/empty-cart.png" alt="...">
-        </div>
-    </div>
-</div>
-} @else {
 <div class="card border-light mb-3">
 
     <!-- Card header -->
@@ -16,10 +5,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col">
-                @if (cartItemCount < 2) { <h2>Carrito ({{ cartItemCount }} artículo)</h2>
-                    } @else {
-                    <h2>Carrito ({{ cartItemCount }} artículos)</h2>
-                    }
+                <h2>{{ cartItemCount }} artículo(s) en el carrito <i class="ph ph-shopping-cart i-cart"></i></h2>
             </div>
 
             <div class="col">
@@ -35,46 +21,84 @@
 
     <div class="card-body">
         <div class="row">
+            @if (cart.length === 0) {
+
+            <div class="text-center-message table-empty">
+                <h4>No hay artículos en el carrito</h4>
+            </div>
+
+            } @else {
+
             <div class="col-md-8">
+
 
                 <!-- Cart Products -->
 
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr class="table-primary">
-                            <th></th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th></th>
-                        </tr>
-                    </thead>
+                <div class="row">
+                    <!-- Tabla 1: Imagen, Producto y Precio -->
+                    <table class="col table">
+                        <thead class="thead-dark">
+                            <tr class="table-primary">
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (product of cart | paginate: pageConfig; track product; let i = $index) {
+                            <tr class="selector" (click)="redirect(['product/' + product.gtin])">
+                                <td class="tr-data">
+                                    <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
+                                        class="d-block w-100" alt="...">
+                                </td>
+                                <td class="tr-data">{{ product.product.product }}</td>
+                                <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
 
-                    <tbody>
-                        @for (product of cart | paginate: pageConfig; track product; let i = $index) {
-                        <tr>
-                            <td class="tr-data">
-                                <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
-                                    class="d-block w-100" alt="...">
-                            </td>
-                            <td class="tr-data">{{ product.product.product }}</td>
-                            <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
-                            <td class="tr-data">{{ product.quantity }}</td>
-                            <td class="tr-data">
-                                <button class="btn btn-delete-product" (click)="removeFromCart(product.cart_id)">
-                                    <i class="ph ph-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
+                    <!-- Tabla 2: Cantidad y Acciones -->
+                    <table class="col table">
+                        <thead class="thead-dark">
+                            <tr class="table-primary">
+                                <th>Cantidad</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (product of cart | paginate: pageConfig; track product; let i = $index) {
+                            <tr>
+                                <td class="tr-data row quantity-btns">
+                                    <button class="btn quantity-btn minus col" (click)="decreaseProduct(product)">
+                                        <i class="ph ph-minus"></i>
+                                    </button>
+
+                                    <input class="quantity-btn quantity-input col" id="quantity-display" type="text"
+                                        [(ngModel)]="product.quantity" />
+
+                                    <button class="btn quantity-btn plus col" (click)="increaseProduct(product)">
+                                        <i class="ph ph-plus"></i>
+                                    </button>
+                                </td>
+                                <td class="tr-data">
+                                    <button class="btn btn-delete-product" (click)="removeFromCart(product.cart_id)">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
 
                 <!-- Pagination controls -->
 
-                <div class="pagination-container">
-                    <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
-                        (pageChange)="pageConfig.currentPage = $event">
+                <div class="row pagination-container">
+                    <div class="col"></div>
+                    <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
+                        (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
                     </pagination-controls>
                 </div>
             </div>
@@ -91,17 +115,17 @@
 
                         <div class="d-flex align-items-center justify-content-center mb-3">
                             <i class="ph ph-truck mr-2" style="font-size: larger;"></i>&nbsp;
-                            <span>Envío gratis a todo el país</span>
+                            <span>Envío gratis</span>
                         </div>
 
                         <div class="d-flex align-items-center justify-content-center mb-3">
                             <i class="ph ph-credit-card mr-2"></i>&nbsp;
-                            <span>Puedes pagar a meses&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span>IVA Incluido (16%)</span>
                         </div>
 
                         <br>
 
-                        <button type="button" class="btn btn-secondary btn-buy btn-block" (click)="navigateToBuy()">
+                        <button type="button" class="btn btn-dark btn-buy btn-block" (click)="navigateToBuy()">
                             <i class="ph ph-credit-card icon-text-button"></i>
                             Comprar
                         </button>
@@ -110,7 +134,7 @@
                     </div>
                 </div>
             </div>
+            }
         </div>
     </div>
 </div>
-}

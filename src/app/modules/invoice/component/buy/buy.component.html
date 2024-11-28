@@ -1,11 +1,11 @@
 <div class="card border-light mb-3">
 
     <!-- Card header -->
-  
+
     <div class="card-header">
         <div class="row">
             <div class="col">
-                <h2>Revisión de Compra</h2>
+                <h2>Resumen de Compra</h2>
             </div>
         </div>
     </div>
@@ -17,50 +17,47 @@
             <div class="col-md-8">
 
                 <div class="col">
-                    <span class="span-data">Pedido de:
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp; {{ customer.name + ' ' + customer.surname }}</span>
+                    <span class="span-data">Nombre: {{ customer.name + ' ' + customer.surname }}</span>
                     <br>
-                    <span class="span-data">Enviar a:
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp; {{ customer.address }}</span>
-                    <br>
-                    <span class="span-data">Método de pago:&nbsp;&nbsp;&nbsp; Tarjeta de crédito</span>
+                    <span class="span-data">Dirección: {{ customer.address }}</span>
                     <br><br>
                 </div>
 
                 <!-- Cart Products -->
-        
+
                 <table class="table">
                     <thead class="thead-dark">
                         <tr class="table-primary">
-                            <th colspan="4">Productos</th>
+                            <th>Imagen</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
                         </tr>
                     </thead>
-                
+
                     <tbody>
                         @for (product of products | paginate: pageConfig; track product; let i = $index) {
-                            <tr>
-                                <td class="tr-data">
-                                    <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
-                                        class="d-block w-100" alt="...">
-                                </td>
-                                <td class="tr-data">{{ product.product }}</td>
-                                <td class="tr-data">{{ product.price | currency : "USD" }}</td>
-                                <td class="tr-data">{{ product.quantity }}</td>
-                            </tr>
+                        <tr>
+                            <td class="tr-data">
+                                <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
+                                    class="d-block w-100" alt="...">
+                            </td>
+                            <td class="tr-data">{{ product.product.product }}</td>
+                            <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
+                            <td class="tr-data">{{ product.quantity }}</td>
+                        </tr>
                         }
                     </tbody>
                 </table>
-                
+
                 <!-- Pagination controls -->
-                
-                <div class="pagination-container">
-                    <pagination-controls previousLabel="Anterior" nextLabel="Siguiente"
-                        (pageChange)="pageConfig.currentPage = $event">
+
+                <div class="row pagination-container">
+                    <div class="col"></div>
+                    <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
+                        (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
                     </pagination-controls>
+
                 </div>
             </div>
 
@@ -70,35 +67,48 @@
 
                 <div class="card">
                     <div class="card-cart-total text-center">
-                        <br>
-                        <i class="ph ph-hand-coins"></i><span class="span-quantities">&nbsp; Subtotal {{ subtotal | currency:'USD' }}</span><br>
-                        <div class="hr-container">
-                            <hr>
-                        </div>
-
-                        <i class="ph ph-hand-coins"></i><span class="span-quantities">&nbsp; IVA 16% ({{ iva | currency:'USD' }})</span><br>
-                        <div class="hr-container">
-                            <hr>
-                        </div>
-                        
-                        <i class="ph ph-hand-coins"></i><span class="span-quantities">&nbsp; Total {{ total | currency:'USD' }}</span><br>
-                        <div class="hr-container">
-                            <hr>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-center mb-3">
-                            <i class="ph ph-currency-circle-dollar"></i>&nbsp;
-                            <span>Los precios incluyen IVA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-center mb-3">
-                            <i class="ph ph-brackets-angle"></i>&nbsp;
-                            <span>¿Tienes un código promocional?</span>
-                        </div>
+                        <h2 class="card-header">Total {{ total | currency:'USD' }}</h2>
 
                         <br>
+                        <i class="ph ph-hand-coins"></i><span class="span-quantities">&nbsp; Subtotal {{ subtotal |
+                            currency:'USD' }}</span><br>
+                        <div class="hr-container">
+                            <hr>
+                        </div>
 
-                        <button type="button" class="btn btn-secondary btn-buy btn-block" (click)="confirmPurchase()">
+                        <i class="ph ph-hand-coins"></i>
+                        <span class="span-quantities"> IVA 16% ({{ iva |
+                            currency:'USD' }})</span><br>
+                        <div class="hr-container">
+                            <hr>
+                        </div>
+                        <br>
+
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-truck mr-2" style="font-size: larger;"></i>&nbsp;
+                            <span>Envío gratis</span><br>
+                        </div>
+                        <br>
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-package"></i>
+                            <span>Fecha estimada de entrega:</span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <span>{{estimatedDeliveryDate}}</span>
+                        </div>
+                        <br>
+
+                        <i class="ph ph-credit-card icon-text-button"></i>
+                        <span class="text-center"> Compra con tarjeta de crédito/débito</span><br>
+                        <div class="hr-container">
+                            <hr>
+                        </div>
+
+                        <button type="button" class="col btn btn-danger btn-block" (click)="redirect(['cart'])">
+                            <i class="ph ph-x-circle"></i>
+                            Cancelar compra
+                        </button>
+                        <button type="button" class="col btn btn-success btn-block" (click)="confirmPurchase()">
                             <i class="ph ph-credit-card icon-text-button"></i>
                             Realizar compra
                         </button>

@@ -97,8 +97,8 @@
 
         <div class="row pagination-container">
             <div class="col"></div>
-            <pagination-controls class="col align-center" previousLabel="Anterior" nextLabel="Siguiente"
-                (pageChange)="pageConfig.currentPage = $event">
+            <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
+                (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
             </pagination-controls>
             <div class="col align-end card-footer" style="margin-right: 0;">
                 <small>{{ current_date | date: 'dd/MMM/yyyy, h:mm a' }}</small>

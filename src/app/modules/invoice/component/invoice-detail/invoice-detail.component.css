@@ -1,0 +1,34 @@
+.invoice-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .invoice-container h2, .invoice-container h3 {
+    text-align: center;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+
+  .nav-logo {
+    height: 50px;
+    margin-left: 8px;
+    margin-right: 20px;
+  }
+
+
+  .navbar-brand {
+    display: flex;
+}
+
+.navbar-brand h5 {
+    margin-right: 15px;
+    margin-top: 12px;
+}
+  

@@ -31,8 +31,8 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr class="table-primary">
+                    <th>No. de factura</th>
                     <th>ID</th>
-                    <th>Código</th>
                     <th>Monto total</th>
                     <th>Fecha de compra</th>
                     <th>Más</th>
@@ -59,9 +59,9 @@
                             <!-- Menu options -->
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item">
-                                    <i class="ph ph-eye icon-text-ul"></i>Ver detalles
-                                </a>
+                                <a class="dropdown-item" href="/invoice/{{invoice.invoice_id}}">
+                                    Ver detalles
+                                </a>                               
                             </div>
                         </div>
                     </td>
@@ -75,8 +75,8 @@
 
         <div class="row pagination-container">
             <div class="col"></div>
-            <pagination-controls class="col align-center" previousLabel="Anterior" nextLabel="Siguiente"
-                (pageChange)="pageConfig.currentPage = $event">
+            <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
+                (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
             </pagination-controls>
             <div class="col align-end card-footer" style="margin-right: 0;">
                 <small>{{ current_date | date: 'dd/MMM/yyyy, h:mm a' }}</small>

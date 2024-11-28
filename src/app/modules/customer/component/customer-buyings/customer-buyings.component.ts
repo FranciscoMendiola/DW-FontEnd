@@ -26,6 +26,7 @@ export class CustomerBuyingsComponent {
   invoices: DtoInvoiceList[] = []; // Invoice list
 
   page: number | Event = 1;
+  current_date = new Date(); // hora y fecha actual
 
   swal: SwalMessages = new SwalMessages(); // swal messages
 
@@ -36,7 +37,7 @@ export class CustomerBuyingsComponent {
   ) { }
 
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 5;
   totalItems: number = 0;
 
   pageConfig: PagingConfig = {} as PagingConfig;
@@ -46,6 +47,7 @@ export class CustomerBuyingsComponent {
     if (this.rfc) {
       this.getCustomer();
       this.getInvoices();
+
     } else {
       this.swal.errorMessage("¡Cliente Inexistente!");
     }
@@ -57,12 +59,13 @@ export class CustomerBuyingsComponent {
     }
   }
 
+
   // Customer 
 
   getCustomer() {
     this.customerService.getCustomer(this.rfc).subscribe({
       next: (v) => {
-        this.customer = v.body!;
+        this.customer = v;
       },
       error: (e) => {
         console.log(e);
@@ -76,7 +79,7 @@ export class CustomerBuyingsComponent {
   getInvoices() {
     this.invoiceService.getInvoices().subscribe({
       next: (v) => {
-        this.invoices = v.body!;
+        this.invoices = v;
       },
       error: (e) => {
         console.log(e);
