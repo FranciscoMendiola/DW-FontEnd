@@ -34,4 +34,17 @@ export class CartService {
   removeFromCart(product_id: number): Observable<any> {
     return this.http.delete(api_dwb_uri + this.source + "/" + product_id);
   }
+
+  getItemCount(): Observable<number> {
+    return this.getCart().pipe(
+      map(cart => {
+        let cartItemCount = 0;
+        cart.forEach((item: any) => {
+          cartItemCount += 1; // Aquí ajusta si necesitas sumar cantidades en lugar de elementos individuales
+        });
+        return cartItemCount;
+      })
+    );
+  }
+
 }

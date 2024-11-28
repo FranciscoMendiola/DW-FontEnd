@@ -55,7 +55,7 @@
                 <div class="row pagination-container">
                     <div class="col"></div>
                     <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
-                        (pageChange)="pageConfig.currentPage = $event">
+                        (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
                     </pagination-controls>
 
                 </div>

@@ -114,10 +114,8 @@ export class NavbarComponent {
 
 
   getCartItemCount() {
-    let cart = this.cartService.getCart();
-
-    cart.forEach(e => {
-      this.cartItemCount += e.quantity;
+    this.cartService.getItemCount().subscribe(count => {
+      this.cartItemCount = count;
     });
   }
 }

@@ -259,7 +259,6 @@ export class ProductImageComponent {
   addToCart() {
     if (this.product.stock >= (this.quantity + this.cartItemCount) && (this.quantity + this.cartItemCount) >= 1) {
 
-
       if (this.gtin) {
         const newItem = {
           rfc: this.rfc,
