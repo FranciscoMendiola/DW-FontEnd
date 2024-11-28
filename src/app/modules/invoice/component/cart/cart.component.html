@@ -1,0 +1,140 @@
+<div class="card border-light mb-3">
+
+    <!-- Card header -->
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col">
+                <h2>{{ cartItemCount }} artículo(s) en el carrito <i class="ph ph-shopping-cart i-cart"></i></h2>
+            </div>
+
+            <div class="col">
+                <button type="button" class="btn btn-secondary" style="float: right" (click)="clearCart()">
+                    <i class="ph ph-plus-circle"></i>
+                    Vaciar carrito
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card body -->
+
+    <div class="card-body">
+        <div class="row">
+            @if (cart.length === 0) {
+
+            <div class="text-center-message table-empty">
+                <h4>No hay artículos en el carrito</h4>
+            </div>
+
+            } @else {
+
+            <div class="col-md-8">
+
+
+                <!-- Cart Products -->
+
+                <div class="row">
+                    <!-- Tabla 1: Imagen, Producto y Precio -->
+                    <table class="col table">
+                        <thead class="thead-dark">
+                            <tr class="table-primary">
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (product of cart | paginate: pageConfig; track product; let i = $index) {
+                            <tr class="selector" (click)="redirect(['product/' + product.gtin])">
+                                <td class="tr-data">
+                                    <img [src]="product.image !== '' ? product.image : 'assets/images/default-image.png'"
+                                        class="d-block w-100" alt="...">
+                                </td>
+                                <td class="tr-data">{{ product.product.product }}</td>
+                                <td class="tr-data">{{ product.product.price | currency : "USD" }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Tabla 2: Cantidad y Acciones -->
+                    <table class="col table">
+                        <thead class="thead-dark">
+                            <tr class="table-primary">
+                                <th>Cantidad</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (product of cart | paginate: pageConfig; track product; let i = $index) {
+                            <tr>
+                                <td class="tr-data row quantity-btns">
+                                    <button class="btn quantity-btn minus col" (click)="decreaseProduct(product)">
+                                        <i class="ph ph-minus"></i>
+                                    </button>
+
+                                    <input class="quantity-btn quantity-input col" id="quantity-display" type="text"
+                                        [(ngModel)]="product.quantity" />
+
+                                    <button class="btn quantity-btn plus col" (click)="increaseProduct(product)">
+                                        <i class="ph ph-plus"></i>
+                                    </button>
+                                </td>
+                                <td class="tr-data">
+                                    <button class="btn btn-delete-product" (click)="removeFromCart(product.cart_id)">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- Pagination controls -->
+
+                <div class="row pagination-container">
+                    <div class="col"></div>
+                    <pagination-controls class="col-md-8 align-center" previousLabel="Anterior" nextLabel="Siguiente"
+                        (pageChange)="pageConfig.currentPage = $event" [maxSize]="6">
+                    </pagination-controls>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+
+                <!-- Cart Total -->
+
+                <div class="card">
+                    <div class="card-cart-total text-center">
+                        <h2 class="card-title">Total {{ cartTotal | currency:'USD' }}</h2>
+
+                        <br>
+
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-truck mr-2" style="font-size: larger;"></i>&nbsp;
+                            <span>Envío gratis</span>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="ph ph-credit-card mr-2"></i>&nbsp;
+                            <span>IVA Incluido (16%)</span>
+                        </div>
+
+                        <br>
+
+                        <button type="button" class="btn btn-dark btn-buy btn-block" (click)="navigateToBuy()">
+                            <i class="ph ph-credit-card icon-text-button"></i>
+                            Comprar
+                        </button>
+
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

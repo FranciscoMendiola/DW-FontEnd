@@ -1,0 +1,47 @@
+<div class="card border-light mb-3">
+
+    <!-- Card header -->
+
+    <div class="card-header">
+        <h4>{{ category.category }}</h4>
+    </div>
+
+    <!-- Card body -->
+
+    <div class="card-body">
+
+        <!-- loading  -->
+
+        @if(loading) {
+        <div class="text-center">
+            <img src="assets/loading.gif" class="img-loading" alt="">
+        </div>
+        }
+
+        @if(!loading && products.length == 0){
+        <div class="text-center-message table-empty">
+            <h4>No hay productos disponibles en {{category.category}}</h4>
+        </div>
+        } @else {
+
+        <div class="row">
+            @for (product of products; track product; let i = $index) {
+            <div class="col-md-4">
+                <div class="card card-image" (click)="navigateToView(product.gtin)">
+                    <div class="hover-text">{{ product.product + "\n$" + product.price}}</div>
+                    @if (images[product.product_id].length > 0) {
+                    <img src="{{images[product.product_id][0].image}}" class="d-block w-100" alt="...">
+                    } @else {
+                    <img src="assets/images/default-image.png" class="default-image d-block w-100" alt="...">
+
+                    }
+                    <div class="text-center">
+                        <h3>{{ product.product }}</h3>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

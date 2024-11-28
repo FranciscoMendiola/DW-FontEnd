@@ -1,0 +1,19 @@
+table {
+    text-align: center;
+}
+
+#dropdownMenuButton {
+    background-color: transparent !important;
+}
+
+.card-body,
+.tr-data {
+    background-color: aliceblue;
+}
+
+.card-header {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    padding-top: 30px;
+}

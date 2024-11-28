@@ -1,0 +1,32 @@
+table {
+    text-align: center;
+}
+
+#dropdownMenuButton {
+    background-color: transparent !important;
+}
+
+.card-body,
+.tr-data {
+    background-color: rgb(240, 248, 255);
+}
+
+.card-header {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    padding-top: 30px;
+}
+
+.color-red {
+    color: #CA2A4A;
+}
+
+.input-error-message {
+    color: #CA2A4A;
+}
+
+.td-status {
+    margin-left: 80px;
+    padding-top: 4px;
+}

@@ -1,0 +1,9 @@
+.form-control {
+    border-radius: 0px 5px 5px 0px;
+}
+
+.input-group-text {
+    background-color: #f0f8ff;
+    border-radius: 5px 0px 0px 5px;
+    width: 50px;
+}

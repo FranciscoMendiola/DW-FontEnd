@@ -1,0 +1,51 @@
+hr {
+    color: #013a55;
+    display: inline-block;
+    width: 60%;
+}
+
+table {
+    text-align: center;
+}
+
+td,
+.card-body,
+.card-cart-total {
+    background-color: aliceblue;
+}
+
+.card-header {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    padding-top: 30px;
+}
+
+
+
+.d-block {
+    height: 60px;
+}
+
+.hr-container {
+    text-align: center;
+}
+
+.ph-hand-coins {
+    float: left;
+    margin-left: 110px;
+}
+
+.span-data {
+    font-style: italic;
+    font-weight: 400;
+}
+
+.span-quantities {
+    float: left;
+    font-size: large;
+}
+
+.btn-block {
+    margin: 0 5px;
+}
