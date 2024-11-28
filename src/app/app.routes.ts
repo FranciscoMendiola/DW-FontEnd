@@ -16,6 +16,8 @@ import { ProductByCategoryComponent } from './modules/product/component/product-
 import { CartComponent } from './modules/invoice/component/cart/cart.component';
 import { BuyComponent } from './modules/invoice/component/buy/buy.component';
 import { CustomerBuyingsComponent } from './modules/customer/component/customer-buyings/customer-buyings.component';
+import { InvoiceDetailComponent } from './modules/invoice/component/invoice-detail/invoice-detail.component';
+
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,5 +35,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'cart', component: CartComponent },
     { path: 'cart/:buy', component: BuyComponent },
-    { path: 'customer/:rfc/buyings', component: CustomerBuyingsComponent }
+    { path: 'customer/:rfc/buyings', component: CustomerBuyingsComponent },
+    { path: 'invoice/:id', component: InvoiceDetailComponent }
 ];
